@@ -9,6 +9,10 @@ int is_whitespace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
+int	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
 
 // is const char **p -> modify char* pointer of line but not the chars inside
 char *read_word(const char *line, const char **p)

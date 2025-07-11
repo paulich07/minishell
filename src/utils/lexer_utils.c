@@ -32,6 +32,9 @@ t_quote_type classify_quote(const char *raw_token)
 		return (S_QUOTE);
 	if (len >= 2 && is_quoted(raw_token, len, '"'))
 		return (D_QUOTE);
+	if (raw_token && (ft_strchr(raw_token, '\'')
+			|| ft_strchr(raw_token, '"')))
+		return (W_QUOTE);
 	return (N_QUOTE);
 }
 
@@ -40,10 +43,34 @@ int is_quoted(const char *raw_token, int len, char quote)
 	return (raw_token[0] == quote && raw_token[len - 1] == quote);
 }
 
-int is_malformed(const char *raw_token, int len)
+int	str_next_c_index(const char *str, int c, int start)
 {
-	return ((raw_token[0] == '\'' && raw_token[len - 1] != '\'')
-			|| (raw_token[0] == '"' && raw_token[len - 1] != '"')
-			|| (raw_token[0] != '\'' && raw_token[len - 1] == '\'')
-			|| (raw_token[0] != '"' && raw_token[len - 1] == '"'));
+	int	i;
+
+	i = start - 1;
+	while (str &&& str[++i])
+	{
+		if (str[i] == c)
+			return (i);
+	}
+	return (-1);
+}
+
+int	is_malformed(const char *raw_token, int len)
+{
+	int		next_idx;
+	int		i;
+
+	i = -1;
+	while (++i < len)
+	{
+		if (is_quote(raw_token[i]))
+		{
+			next_idx = str_next_c_index(raw_token, raw_token[i], i);
+			if (next_idx == -1)
+				return (1);
+			i = next_idx;
+		}
+	}
+	return (0);
 }

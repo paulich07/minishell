@@ -64,6 +64,8 @@ char			*read_next_token(const char *line, const char **p);
 // tokenizer_utils
 int				is_operator_char(char c);
 int				is_whitespace(char c);
+int				is_quote(char c);
+int				str_next_c_index(const char *str, int c, int start);
 char			*read_word(const char *line, const char **p);
 char			*read_operator(const char *line, const char **p);
 char			*read_quoted(const char *line, const char **p, char quote);

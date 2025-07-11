@@ -37,7 +37,7 @@ int	executor(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork, int is
 	status = 127;
 	if (!ast || !shell)
 		return (status);
-	// print_ast(ast, 1);
+	print_ast(ast, 1);
 	if (ast_is_redirection(ast))
 		return (executor(ast->left, fd_in, fd_out, shell, is_fork, is_in_pipeline));
 	if (ast_is_simple_pipeline(ast) || ast->type == AST_PIPE)

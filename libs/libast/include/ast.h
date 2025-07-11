@@ -35,6 +35,7 @@ typedef enum e_quote_type
 	N_QUOTE = 0,
 	S_QUOTE,
 	D_QUOTE,
+	W_QUOTE,
 }	t_quote_type;
 
 typedef struct s_fctx

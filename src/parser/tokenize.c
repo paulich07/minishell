@@ -11,15 +11,27 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+
+char	*ft_strfreejoin(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
+
 // Creates tokens out of the command line
 // separated by spaces or operators
 // saves them into a t_list* of char*
 t_list	*tokenize(const char *line)
 {
 	t_list		*tokens;
-	t_list		*new_token;
+	t_list		*node;
 	char		*word;
 	const char	*p = line;
+	char		*start;
 
 	if (!line)
 		return (NULL);
@@ -30,13 +42,22 @@ t_list	*tokenize(const char *line)
 			p++;
 		if (*p == '\0')
 			break ;
+		start = (char *)p;
 		word = read_next_token(line, &p);
 		if (!word)
 			return (free_raw_tokens(&tokens), NULL);
-		new_token = ft_lstnew(word);
-		if (!new_token)
+		node = ft_lstlast(tokens);
+		if (line != start && !is_whitespace(*(start -1)) && !is_operator_char(*(start - 1)) && node != NULL)
+		{
+			node->content = ft_strfreejoin(node->content, word);
+			if (!node->content)
+				return (free_raw_tokens(&tokens), NULL);
+			continue ;
+		}
+		node = ft_lstnew(word);
+		if (!node)
 			return (free(word), free_raw_tokens(&tokens), NULL);
-		ft_lstadd_back(&tokens, new_token);
+		ft_lstadd_back(&tokens, node);
 	}
 	return (tokens);
 }

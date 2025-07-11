@@ -226,4 +226,7 @@ fclean: clean tclean
 
 re: fclean all
 
+val: $(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --quiet --suppressions=good.supp --log-file=valgrind.log ./$(NAME)
+
 .PHONY: all test test2 clean fclean tclean re

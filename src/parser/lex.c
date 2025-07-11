@@ -55,19 +55,40 @@ static t_token	*init_token(t_list *raw_tokens)
 	return (token);
 }
 
+int	remove_quotes(t_token *token, int quote_idx)
+{
+	int			len;
+	int			next;
+
+	if (!token->value)
+		return (-1);
+	len = ft_strlen(token->value);
+	if (!is_quote(token->value[quote_idx]))
+		return (0);
+	next = str_next_c_index(token->value, token->value[quote_idx], quote_idx + 1);
+	if (next == -1)
+		return (-1);
+	ft_memmove(token->value + quote_idx, token->value + quote_idx + 1, next - quote_idx - 1);
+	ft_memmove(token->value + next, token->value + next + 1, len - next - 1);
+	token->value[len - 2] = '\0';
+	return (next - 2);
+}
+
 // 1 if stripped, 0 otherwise
 int	strip_if_quoted(t_token *token)
 {
-	char	*stripped;
+	int	i;
 
-	if ((token->quote == S_QUOTE || token->quote == D_QUOTE)
-		&& ft_strlen(token->value) >= 2)
+	i = -1;
+	while (token->value && token->value[++i])
 	{
-		stripped = ft_substr(token->value, 1, ft_strlen(token->value) - 2);
-		free(token->value);
-		token->value = stripped;
-		if (!token->value)
-			return (0);
+		if (is_quote(token->value[i]))
+		{
+			i = remove_quotes(token, i);
+			if (i == -1)
+				return (0);
+			i = i - 1;
+		}
 	}
 	return (1);
 }
