@@ -19,7 +19,7 @@ void	init_shell(t_sh *shell, char *envp[])
 	shell->is_interactive = isatty(STDIN_FILENO);
 }
 
-t_ast *read_command_line(const char *line)
+t_ast	*read_command_line(const char *line)
 {
 	t_list	*raw;
 	t_list	*lexed;
@@ -30,7 +30,7 @@ t_ast *read_command_line(const char *line)
 		return (NULL);
 	lexed = lex(raw);
 	if (!lexed)
-		return(NULL);
+		return (NULL);
 	tree = parse(lexed);
 	if (!tree)
 		return (NULL);
@@ -38,15 +38,13 @@ t_ast *read_command_line(const char *line)
 		printf("❌ Parse error: %s\n", tree->error);
 	free_raw_tokens(&raw);
 	free_token_list(&lexed);
-	return(tree);
+	return (tree);
 }
 
 void	cleanup_and_exit(char *path, char **envp, int exit_code, char *err_msg)
 {
-	// fprintf(stderr, "cleanup\n");
 	if (err_msg)
 		perror(err_msg);
-		// TO DO dprintf(STDERR_FILENO, "%s", err_msg);
 	free(path);
 	mtxfree_str(envp);
 	exit(exit_code);
@@ -57,12 +55,19 @@ void	free_all(t_sh *shell)
 {
 	if (shell && shell->env)
 		free_env(shell->env);
+	ast_free(shell->tree);
+	if (shell->line)
+		free(shell->line);
+	shell->tree = NULL;
+	shell->line = NULL;
+	shell->env = NULL;
 }
 
-int is_numeric(const char *str)
+int	is_numeric(const char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!str)
 		return (0);
 	if (str[0] == '-' || str[0] == '+')
