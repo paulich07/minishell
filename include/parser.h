@@ -73,7 +73,6 @@ char			*read_quoted(const char *line, const char **p, char quote);
 t_list			*lex(t_list *raw_tokens);
 void			free_token(void *ptr);
 void			free_token_list(t_list **list);
-int				strip_if_quoted(t_token *token);
 int				check_for_errors(t_token *token);
 int				tkn_is_redirection(t_token *token);
 int				tkn_is_word(t_token *token);

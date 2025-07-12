@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "expansion.h"
+#include "minishell.h"
 
 static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh);
 static void	handle_code(t_sb *sb, t_sh *shell);
@@ -39,10 +40,20 @@ static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
 {
 	size_t	i;
 	char	*result;
+	int		res_i;
 
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '\'')
+		{
+			res_i = str_next_c_index(str, str[i], i);
+			if (res_i == -1)
+				res_i = ft_strlen(str);
+			while (i < (size_t)res_i)
+				sb_append_char(sb, str[i++]);
+			continue ;
+		}
 		if (str[i] == '$' && str[i + 1])
 		{
 			i++;
@@ -60,6 +71,7 @@ static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
 			sb_append_char(sb, str[i++]);
 	}
 	result = sb_build(sb);
+	result = strip_if_quoted(result);
 	return (result);
 }
 
@@ -77,8 +89,19 @@ static void	handle_code(t_sb *sb, t_sh *sh)
 
 static void	handle_dollar(const char *str, size_t *i, t_sb *sb)
 {
+	int		next_quote;
+
 	sb_append_char(sb, '$');
-	sb_append_char(sb, str[*i]);
+	if (is_quote(str[*i]))
+	{
+		next_quote = str_next_c_index(str, str[*i], *i);
+		if (next_quote == -1)
+			next_quote = ft_strlen(str);
+		while (*i <= (size_t)next_quote)
+			sb_append_char(sb, str[(*i)++]);
+	}
+	else
+		sb_append_char(sb, str[*i]);
 	(*i)++;
 }
 

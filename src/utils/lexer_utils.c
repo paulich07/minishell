@@ -50,7 +50,7 @@ int	str_next_c_index(const char *str, int c, int start)
 	i = start - 1;
 	while (str && str[++i])
 	{
-		if (str[i] == c)
+		if (str[i] == c && i > start)
 			return (i);
 	}
 	return (-1);

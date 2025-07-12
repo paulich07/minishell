@@ -27,6 +27,7 @@
 # include "executor.h"
 # include "builtin.h"
 # include "preprocessor.h"
+# include "utils.h"
 
 # include <fcntl.h>
 # include <stdio.h>

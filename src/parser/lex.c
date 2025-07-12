@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "minishell.h"
 
 static t_token	*init_token(t_list *raw_tokens);
 
@@ -49,56 +50,54 @@ static t_token	*init_token(t_list *raw_tokens)
 		return (free(token), NULL);
 	token->type = classify_token(token->value);
 	token->quote = classify_quote(token->value);
-	if (!strip_if_quoted(token))
+	token->value = strip_if_quoted(token->value);
+	if (!token->value)
 		return (free_token(token), NULL);
 	check_for_errors(token);
 	return (token);
 }
 
-int	remove_quotes(t_token *token, int quote_idx)
+int	remove_quotes(char *value, int quote_idx)
 {
 	int			len;
 	int			next;
 
-	if (!token->value)
+	if (!value)
 		return (-1);
-	len = ft_strlen(token->value);
-	if (!is_quote(token->value[quote_idx]))
-		return (0);
-	next = str_next_c_index(token->value, token->value[quote_idx],
-			quote_idx + 1);
+	len = ft_strlen(value);
+	if (!is_quote(value[quote_idx]))
+		return (quote_idx);
+	next = str_next_c_index(value, value[quote_idx], quote_idx);
 	if (next == -1)
 		return (-1);
-	ft_memmove(token->value + quote_idx,
-		token->value + quote_idx + 1, next - quote_idx - 1);
-	ft_memmove(token->value + next - 1,
-		token->value + next + 1, len - next);
-	token->value[len - 2] = '\0';
+	ft_memmove(value + quote_idx, value + quote_idx + 1, next - quote_idx - 1);
+	ft_memmove(value + next - 1, value + next + 1, len - next);
+	value[len - 2] = '\0';
 	return (next - 2);
 }
 
 // 1 if stripped, 0 otherwise
-int	strip_if_quoted(t_token *token)
+char	*strip_if_quoted(char *value)
 {
 	int	i;
 
 	i = -1;
-	while (token->value && token->value[++i])
+	while (value && value[++i])
 	{
-		if (is_quote(token->value[i]))
+		if (is_quote(value[i]))
 		{
-			if (token->value[i] == '\'')
+			if (value[i] == '\'')
 			{
-				i = str_next_c_index(token->value, token->value[i], i);
+				i = str_next_c_index(value, value[i], i);
 				if (i == -1)
-					return (0);
+					return (free(value), NULL);
 				continue ;
 			}
-			i = remove_quotes(token, i);
+			i = remove_quotes(value, i);
 			if (i == -1)
-				return (0);
+				return (free(value), NULL);
 			i = i - 1;
 		}
 	}
-	return (1);
+	return (value);
 }
