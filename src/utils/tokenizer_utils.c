@@ -20,7 +20,7 @@ char *read_word(const char *line, const char **p)
 	const char	*start = *p;
 
 	// skips quotes
-	while (**p && !is_whitespace(**p) && **p != '\'' && **p != '"' && !is_operator_char(**p))
+	while (**p && !is_whitespace(**p) && !is_quote(**p) && !is_operator_char(**p))
 		(*p)++;
 	return (ft_substr(line, start - line, *p - start));
 }
