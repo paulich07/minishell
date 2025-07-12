@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 04:49:40 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:49:57 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char *expand_variables(char *line, t_sh *shell)
 int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 {
 	char *line;
-	// char *expanded_line;
+	char *expanded_line;
 
 	(void) shell;
 	g_signal_status = 0;
@@ -37,12 +37,12 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 		}
 		if (!line || strcmp(line, delim) == 0)
 			break ;
-		// expanded_line = expand_variables(line, shell);
-		// if (!expanded_line)
-		// 	return (free(line), -1);
-		write(fd_out, line, ft_strlen(line));
+		expanded_line = expand_variables(line, shell);
+		if (!expanded_line)
+			return (free(line), -1);
+		write(fd_out, expanded_line, ft_strlen(expanded_line));
 		write(fd_out, "\n", 1);
-		free(line);
+		free(expanded_line);
 	}
 	return (0);
 }
