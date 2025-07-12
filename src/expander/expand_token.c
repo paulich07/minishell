@@ -50,7 +50,7 @@ static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
 			res_i = str_next_c_index(str, str[i], i);
 			if (res_i == -1)
 				res_i = ft_strlen(str);
-			while (i < (size_t)res_i)
+			while (i <= (size_t)res_i)
 				sb_append_char(sb, str[i++]);
 			continue ;
 		}

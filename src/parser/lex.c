@@ -50,7 +50,6 @@ static t_token	*init_token(t_list *raw_tokens)
 		return (free(token), NULL);
 	token->type = classify_token(token->value);
 	token->quote = classify_quote(token->value);
-	token->value = strip_if_quoted(token->value);
 	if (!token->value)
 		return (free_token(token), NULL);
 	check_for_errors(token);
@@ -96,7 +95,6 @@ char	*strip_if_quoted(char *value)
 			i = remove_quotes(value, i);
 			if (i == -1)
 				return (free(value), NULL);
-			i = i - 1;
 		}
 	}
 	return (value);
