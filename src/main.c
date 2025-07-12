@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:24:11 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:29:50 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ void	main_loop(t_sh *shell)
 		tree = read_command_line(line);
 		expand_ast(tree, shell);
 		if (!tree)
-		{
-			// perror("Generic parser error");
 			continue ;
-		}
 		status = preprocess_redirections(tree, shell);
 		if (status < 0)
 		{
