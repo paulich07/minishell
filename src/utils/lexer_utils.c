@@ -48,7 +48,7 @@ int	str_next_c_index(const char *str, int c, int start)
 	int	i;
 
 	i = start - 1;
-	while (str &&& str[++i])
+	while (str && str[++i])
 	{
 		if (str[i] == c)
 			return (i);
