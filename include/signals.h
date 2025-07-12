@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:12:47 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 21:42:28 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:43:43 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	handler_sigint_heredoc(int sig);
 
 // utils
 void	print_newline(int sig);
-void	update_signal_status(t_sh *shell)
+void	update_signal_status(t_sh *shell);
 
 #endif
