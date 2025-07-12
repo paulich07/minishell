@@ -34,11 +34,10 @@
 // 		return (0);
 // }
 
-int ast_is_valid(t_ast *node)
+int	ast_is_valid(t_ast *node)
 {
 	if (!node || ast_has_error(node))
 		return (0);
-
 	if (node->type == AST_COMMAND)
 	{
 		// Must have argv[0] (command name), already set during expansion

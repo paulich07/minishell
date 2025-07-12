@@ -47,23 +47,19 @@ static t_ast	*validate_ast_node(t_ast *node)
 // Returns the error message string from the first AST_ERROR node found in the tree.
 // Searches current node, then left subtree, then right subtree.
 // Returns NULL if no error node is found.
-const char *ast_get_error(const t_ast *node)
+const char	*ast_get_error(const t_ast *node)
 {
-	const char *err;
+	const char	*err;
 
 	if (!node)
-		return NULL;
-
+		return (NULL);
 	if (node->type == AST_ERROR && node->error)
-		return node->error;
-
+		return (node->error);
 	err = ast_get_error(node->left);
 	if (err)
-		return err;
-
+		return (err);
 	err = ast_get_error(node->right);
 	if (err)
-		return err;
-
-	return NULL;
+		return (err);
+	return (NULL);
 }

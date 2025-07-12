@@ -64,3 +64,22 @@ char	*strip_if_quoted(char *value)
 	}
 	return (value);
 }
+
+/**
+ * Joins two strings and frees the memory of both s1 and s2
+ */
+char	*ft_strfreejoin(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
+
+void	str_skip_spaces(const char **str)
+{
+	while (str && **str && is_whitespace(**str))
+		(*str)++;
+}

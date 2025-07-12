@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+void	free_raw_tokens(t_list **tokens)
+{
+	ft_lstclear(tokens, free);
+}
+
 int is_operator_char(char c)
 {
 	return (c == '|' || c == '&' || c == '<' || c == '>');

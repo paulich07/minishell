@@ -40,18 +40,20 @@ t_ast	*get_command_node(t_ast *node)
 }
 
 // applies the redirection, creates a ctx in the node 
-// returns 0 on success, -1 if any error occured, EXIT_HEREDOC_SIGINT if Ctrl-C is pressed
+// returns 0 on success, -1 if any error occured,
+// EXIT_HEREDOC_SIGINT if Ctrl-C is pressed
 int	apply_redirection(t_ast *ast, t_sh *shell)
 {
 	t_ast		*cmd;
-	t_fctx	*ctx;
+	t_fctx		*ctx;
 	int			fd;
 
 	if (!ast || !ast->left)
 		return (-1);
 	cmd = get_command_node(ast->left);
 	if (!cmd)
-		return (fprintf(stderr, "❌ Nessun comando trovato per redirection '%s'\n", ast->value), -1);
+		return (fprintf(stderr, "❌ Nessun comando trovato"
+				" per redirection '%s'\n", ast->value), -1);
 	if (!cmd->fd_ctx)
 	{
 		cmd->fd_ctx = fd_ctx_new();
@@ -70,7 +72,7 @@ int	apply_redirection(t_ast *ast, t_sh *shell)
 
 // recursively applies all redirections
 // returns 0 on success, -1 if any error occured
-int		preprocess_redirections(t_ast *ast, t_sh *shell)
+int	preprocess_redirections(t_ast *ast, t_sh *shell)
 {
 	if (!ast)
 		return (0);

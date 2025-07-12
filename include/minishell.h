@@ -48,4 +48,6 @@ int		is_numeric(const char *str);
 void	print_string_matrix(char **matrix);
 void	*copy_string(void *str);
 
+void	str_skip_spaces(const char **str);
+
 #endif
