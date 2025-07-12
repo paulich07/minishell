@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/09 19:32:28 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:28:37 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ int	execute_pipeline(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork
 	left_pid = fork();
 	if (left_pid < 0)
 	{
-		// close(fd[0]); // e' corretto?
-		// close(fd[1]); // e' corretto?
+		close(fd[0]);
+		close(fd[1]);
 		return (perror("fork"), 127);
 	}
 	else if (left_pid == 0)
 	{
+		// set_default_signals();
 		close(fd[0]);
 		if (fd[1] != STDOUT_FILENO)
 		{
@@ -48,13 +49,14 @@ int	execute_pipeline(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork
 		}
 		exit(executor(ast->left, fd_in, STDOUT_FILENO, shell, 1, 1));
 	}
+	// ignore_signals();
 	close(fd[1]);
-	
 	status = executor(ast->right, fd[0], fd_out, shell, 0, 1);
 	// To do salva in shell lo status se pipe non e' forkata
 	close(fd[0]);
 	// non ci interessa lo status dei nodi a sinistra
 	waitpid(left_pid, NULL, 0);
+	// init_signals();
 	// while (waitpid(-1, NULL, 0) > 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status)); 

@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 03:29:22 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:20:53 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 		return (1); // to do gestire errore
 	if (pid == 0)
 	{
+		set_default_signals();
 		if (is_builtin(ast))
 			exit(execute_builtin(ast, fd_in, fd_out, shell));
 		execute_command(ast, fd_in, fd_out, shell); // esce da solo
@@ -108,7 +109,7 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 	// ferma il waitpid del padre assoluto
 	// if (!is_last_child(ast))
 	// 	return (-1);
-
+	ignore_signals();
 	// to do spostare dopo l'esecuzione di tutti i comandi 
 	// aspetta tutti i figli forkati (da solo si da' -1 quando i figli sono finiti)
 	// while (waitpid(-1, &status, 0) != -1) per l'ultimo figlio
@@ -116,6 +117,7 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 		perror("waitpid failed");
 		return (1);
 	}
+	init_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

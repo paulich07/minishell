@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 18:49:57 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:12:52 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 	char *line;
 	char *expanded_line;
 
-	(void) shell;
 	g_signal_status = 0;
 	while (1)
 	{
@@ -87,7 +86,6 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 	close(saved_stdin);
 	close(fd[1]);
 	sigaction(SIGINT, &old_sa, NULL);
-
 	// (if ctrl-c) update status and close the entire pipe
 	if (status == EXIT_SIGINT)
 	{

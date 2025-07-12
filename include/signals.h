@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:12:47 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 00:07:00 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:45:12 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ extern volatile sig_atomic_t	g_signal_status;
 
 void	init_signals(void);
 void	handler_sigaction(int sig);
+void	handler_default_sigaction(int sig);
+void	set_default_signals(void);
+void	ignore_signals(void);
 
 // heredoc
 void	handler_sigint_heredoc(int sig);
