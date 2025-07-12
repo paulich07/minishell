@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:33:59 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 03:05:08 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:00:14 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	apply_redirection(t_ast *ast, t_sh *shell)
 	ctx = cmd->fd_ctx;
 	fd = get_redir_fd(ast, shell);
 	if (fd == EXIT_HEREDOC_SIGINT)
-		return (fprintf(stderr, "130 exit sigint\n"), EXIT_HEREDOC_SIGINT);
+		return (EXIT_HEREDOC_SIGINT);
 	if (fd < 0)
 		return (fprintf(stderr, "redir failed\n"), -1);
 	set_fd_ctx(ctx, fd, ast->type);

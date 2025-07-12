@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_handlers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:28:31 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 21:44:00 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:56:30 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_last_signal = 0;
-
-// handle Ctrl-C (SIGINT) and Ctrl-\ (SIGQUIT)
-// use SA_RESTART to resume syscalls (readline) instead of failing
-void	init_signals()
+// handle Ctrl-C in heredoc (exit heredoc)
+// close STDIN for breaking the while loop of heredoc
+void	handler_sigint_heredoc(int sig)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = handler_sigaction;
-	sa.sa_flags = SA_RESTART;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	// signal(SIGQUIT, SIG_IGN); // to do levare prima di pushare
+	if (sig == SIGINT)
+	{
+		write(STDERR_FILENO, "\n", 1);
+		g_last_signal = SIGINT;
+		close(STDIN_FILENO);
+	}
 }
 
-void	ignore_signals()
+// handle Ctrl-C (break line)
+void	handler_sigaction(int sig)
 {
-	signal(SIGINT, print_newline);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	set_default_signals()
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	if (sig == SIGINT)
+	{
+		write(STDERR_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		g_last_signal = SIGINT;
+	}
 }
