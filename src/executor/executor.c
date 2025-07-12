@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 20:17:16 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:26:17 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	executor(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork, int is
 	}
 	else
 		return (0);
-	if (g_signal_status != 0)
+	if (g_last_signal != 0)
 	{
-		shell->last_code = g_signal_status;
-		g_signal_status = 0;
+		shell->last_code = get_signal_status(g_last_signal);
+		g_last_signal = 0;
 	}
 	else if (!is_fork) // prendere solo status ultimo figlio (non forkato)
 		shell->last_code = status;

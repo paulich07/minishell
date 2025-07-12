@@ -80,6 +80,8 @@ SRCS 		:= \
 	$(SRC_DIR)/expander/expander_utils.c \
 	$(SRC_DIR)/debug.c \
 	$(SRC_DIR)/signals/signals.c \
+	$(SRC_DIR)/signals/signals_handlers.c \
+	$(SRC_DIR)/signals/signals_utils.c \
 	$(SRC_DIR)/executor/executor.c \
 	$(SRC_DIR)/executor/exec_cmd.c \
 	$(SRC_DIR)/executor/handle_redir.c \

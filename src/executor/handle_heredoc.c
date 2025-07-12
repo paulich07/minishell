@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 20:12:52 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:28:22 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 	char *line;
 	char *expanded_line;
 
-	g_signal_status = 0;
+	g_last_signal = 0;
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (g_signal_status == EXIT_SIGINT)
+		if (g_last_signal == SIGINT)
 		{
-			if (line)
-				return (free(line), EXIT_SIGINT);
+			g_last_signal = 0;
+			return (free(line), EXIT_SIGINT);
 		}
 		if (!line || strcmp(line, delim) == 0)
 			break ;
@@ -90,7 +90,7 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 	if (status == EXIT_SIGINT)
 	{
 		shell->last_code = EXIT_SIGINT;
-		g_signal_status = 0;
+		g_last_signal = 0;
 		return (close(fd[0]), EXIT_HEREDOC_SIGINT);
 	}
 	// otherwise the read enpoint remains open

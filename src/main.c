@@ -6,13 +6,13 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 20:36:24 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:42:34 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// It handles Ctrl+D with if (!line) break; 
+// It handles Ctrl+D with if (!line) break;
 int	main(int argc, char *argv[], char *envp[])
 {
 	(void)	argv;
@@ -29,12 +29,10 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		line = readline("> ");
-		if (g_signal_status != 0)
+		update_signal_status(&shell);
+		if (shell.last_code != 0)
 		{
-			fprintf(stderr, "signal\n");
-			shell.last_code = g_signal_status;
-			g_signal_status = 0;
-			write(1, "\n", 1);
+			write(2, "\n", 1);
 			free(line);
 			continue;
 		}
