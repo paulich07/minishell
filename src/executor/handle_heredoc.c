@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:03:32 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 23:02:59 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int heredoc_loop(char *delim, int fd_out, t_sh *shell)
 			return (free(line), EXIT_SIGINT);
 		}
 		if (!line || strcmp(line, delim) == 0)
-			break;
+			break ;
 		expanded_line = expand_variables(line, shell);
 		if (!expanded_line)
 			return (free(line), -1);
@@ -50,43 +50,34 @@ int heredoc_loop(char *delim, int fd_out, t_sh *shell)
 // handles heredoc with the buffer of the pipe instead of a temp file
 // uses close(STDIN_FILENO) for exiting the loop with Ctrl-C
 // and then resets it
-int handle_heredoc(t_ast *ast, t_sh *shell)
+int	handle_heredoc(t_ast *ast, t_sh *shell)
 {
-	int fd[2];
-	int saved_stdin;
-	int status;
-	struct sigaction old_sa;
-	struct sigaction new_sa;
+	int		fd[2];
+	int		saved_stdin;
+	int		status;
 
 	if (!ast || !ast->right)
 		return (-1);
-	// save old struct
-	if (sigaction(SIGINT, NULL, &old_sa) == -1)
-		return (perror("sigaction get"), -1);
 	// dup stdin
 	saved_stdin = dup(STDIN_FILENO); // --------------------- close saved_stdin
 	if (saved_stdin == -1)
 		return (perror("dup stdin"), -1);
-	// init new struct
-	sigemptyset(&new_sa.sa_mask);
-	new_sa.sa_handler = handler_sigint_heredoc;
-	new_sa.sa_flags = SA_RESTART;
-	if (sigaction(SIGINT, &new_sa, NULL) == -1) // ---------- revert struct
-		return (perror("sigaction set"), close(saved_stdin), -1);
+	init_hereodc_signals();
 	// create pipe ------------------------------------------ close fds
 	if (pipe(fd) == -1)
 	{
-		sigaction(SIGINT, &old_sa, NULL); // to do reset and exit f
+		init_signals();
 		close(saved_stdin);
 		return (perror("pipe"), -1);
 	}
 	// loop
 	status = heredoc_loop(ast->right->value, fd[1], shell);
 	// Restore
+	restore_state(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdin);
 	close(fd[1]);
-	sigaction(SIGINT, &old_sa, NULL);
+	init_signals();
 	// (if ctrl-c) update status and close the entire pipe
 	if (status == EXIT_SIGINT)
 	{

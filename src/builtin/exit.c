@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:17:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 04:12:01 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:47:54 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 // print error and
 // - if first numeric, do NOT exit, return 1
 // - if first NOT numeric, exit with 255
-int execute_builtin_exit(t_ast *ast, t_sh *shell)
+int	execute_builtin_exit(t_ast *ast, t_sh *shell)
 {
-	char **argv = ast->argv;
-	long int exit_code = 0;
+	char		**argv;
+	long int	exit_code;
 
+	exit_code = 0;
+	argv = ast->argv;
 	ft_putendl_fd("exit", 2);
 	if (argv[1] && !is_numeric(argv[1]))
 	{
