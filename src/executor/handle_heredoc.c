@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 21:28:22 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:02:31 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char *expand_variables(char *line, t_sh *shell)
 	return (expand_token(line, N_QUOTE, shell));
 }
 
-int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
+int heredoc_loop(char *delim, int fd_out, t_sh *shell)
 {
 	char *line;
 	char *expanded_line;
@@ -29,13 +29,14 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (g_last_signal == SIGINT)
+		update_signal_status(&shell);
+		if (shell.last_code != 0)
 		{
-			g_last_signal = 0;
+			write(2, "\n", 1);
 			return (free(line), EXIT_SIGINT);
 		}
 		if (!line || strcmp(line, delim) == 0)
-			break ;
+			break;
 		expanded_line = expand_variables(line, shell);
 		if (!expanded_line)
 			return (free(line), -1);
@@ -49,14 +50,14 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 // handles heredoc with the buffer of the pipe instead of a temp file
 // uses close(STDIN_FILENO) for exiting the loop with Ctrl-C
 // and then resets it
-int	handle_heredoc(t_ast *ast, t_sh *shell)
+int handle_heredoc(t_ast *ast, t_sh *shell)
 {
 	int fd[2];
 	int saved_stdin;
 	int status;
-	struct sigaction	old_sa;
-	struct sigaction	new_sa;
-	
+	struct sigaction old_sa;
+	struct sigaction new_sa;
+
 	if (!ast || !ast->right)
 		return (-1);
 	// save old struct
