@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strings.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 21:47:23 by sabruma           #+#    #+#             */
-/*   Updated: 2025/06/21 22:07:27 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:26:39 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ char	**ft_split(const char *s, char c);
 size_t	ft_strlen(const char *__s);
 size_t	ft_strlcat(char *to, const char *from, size_t size);
 size_t	ft_strlcpy(char *to, const char *from, size_t size);
+char	*ft_strfreejoin(char *s1, char *s2);
 
 #endif // STRINGS_H

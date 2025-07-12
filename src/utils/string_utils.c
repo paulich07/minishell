@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 20:36:24 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:25:44 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,6 @@ char	*strip_if_quoted(char *value)
 		}
 	}
 	return (value);
-}
-
-/**
- * Joins two strings and frees the memory of both s1 and s2
- */
-char	*ft_strfreejoin(char *s1, char *s2)
-{
-	char	*res;
-
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
 }
 
 void	str_skip_spaces(const char **str)
