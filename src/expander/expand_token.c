@@ -27,7 +27,7 @@ char	*expand_token(const char *str, t_quote_type quote, t_sh *shell)
 	if (!str)
 		return (NULL);
 	if (quote == S_QUOTE)
-		return (ft_strdup(str));
+		return (strip_if_quoted(ft_strdup(str)));
 	sb = sb_create(64);
 	if (!sb)
 		return (NULL);

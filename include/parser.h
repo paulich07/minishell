@@ -94,6 +94,8 @@ t_ast			*parse(t_list *lexemes);
 t_ast			*parse_command(t_parser *p);
 t_ast			*parse_simple_command(t_parser *p);
 t_ast			*parse_pipeline(t_parser *p);
+t_ast			*parse_redirection(t_parser *p, t_ast *cmd);
+
 // errors and validation (also to move into parser)
 int				ast_has_error(const t_ast *node);
 const char		*ast_get_error(const t_ast *node);

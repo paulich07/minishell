@@ -64,7 +64,7 @@ t_list	*tokenize(const char *line)
 
 char	*read_next_token(const char *line, const char **p)
 {
-	if (is_quote(**p)) 
+	if (is_quote(**p))
 		return (read_quoted(line, p, **p));
 	else if (is_operator_char(**p))
 		return (read_operator(line, p));

@@ -1,26 +1,26 @@
 #include "minishell.h"
 
-// add strncmp of && and || if gonna do bonus
-t_token_type classify_token(const char *raw_token)
+// add strncmp of && and || if gonna do bonus :──)
+t_token_type	classify_token(const char *raw_token)
 {
-	size_t len;
+	size_t	len;
 
-	if(!raw_token)
-		return TKN_WORD;
+	if (!raw_token)
+		return (TKN_WORD);
 	len = ft_strlen(raw_token);
 	if (len == 2 && ft_strncmp(raw_token, ">>", 2) == 0)
-		return TKN_APPEND;
+		return (TKN_APPEND);
 	if (len == 2 && ft_strncmp(raw_token, "<<", 2) == 0)
-		return TKN_HEREDOC;
+		return (TKN_HEREDOC);
 	if (len == 1 && raw_token[0] == '|')
-		return TKN_PIPE;
+		return (TKN_PIPE);
 	if (len == 1 && raw_token[0] == '>')
-		return TKN_REDIR_OUT;
+		return (TKN_REDIR_OUT);
 	if (len == 1 && raw_token[0] == '<')
-		return TKN_REDIR_IN;
+		return (TKN_REDIR_IN);
 	if (is_malformed(raw_token, len))
-		return TKN_ERROR;
-	return TKN_WORD;
+		return (TKN_ERROR);
+	return (TKN_WORD);
 }
 
 t_quote_type classify_quote(const char *raw_token)
@@ -41,19 +41,6 @@ t_quote_type classify_quote(const char *raw_token)
 int is_quoted(const char *raw_token, int len, char quote)
 {
 	return (raw_token[0] == quote && raw_token[len - 1] == quote);
-}
-
-int	str_next_c_index(const char *str, int c, int start)
-{
-	int	i;
-
-	i = start - 1;
-	while (str && str[++i])
-	{
-		if (str[i] == c && i > start)
-			return (i);
-	}
-	return (-1);
 }
 
 int	is_malformed(const char *raw_token, int len)
