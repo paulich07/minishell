@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:35:28 by sabruma           #+#    #+#             */
-/*   Updated: 2025/07/09 16:13:24 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:28:32 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	insert_node(t_list **tokens, const char *line, char *start, char *word)
 {
 	t_list	*node;
 
-	node = ft_lstlast(tokens);
+	node = ft_lstlast(*tokens);
 	if (should_join_to_last(line, start) && node != NULL)
 	{
 		node->content = ft_strfreejoin(node->content, word);
@@ -34,7 +34,7 @@ int	insert_node(t_list **tokens, const char *line, char *start, char *word)
 	node = ft_lstnew(word);
 	if (!node)
 		return (0);
-	ft_lstadd_back(&tokens, node);
+	ft_lstadd_back(tokens, node);
 	return (1);
 }
 
@@ -44,7 +44,6 @@ int	insert_node(t_list **tokens, const char *line, char *start, char *word)
 t_list	*tokenize(const char *line)
 {
 	t_list		*tokens;
-	t_list		*node;
 	char		*word;
 	const char	*p = line;
 	char		*start;
