@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:02:31 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/12 22:03:32 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int heredoc_loop(char *delim, int fd_out, t_sh *shell)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		update_signal_status(&shell);
-		if (shell.last_code != 0)
+		update_signal_status(shell);
+		if (shell->last_code != 0)
 		{
 			write(2, "\n", 1);
 			return (free(line), EXIT_SIGINT);
