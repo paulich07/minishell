@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:07:48 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/10 17:00:44 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/12 19:03:00 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char			*read_next_token(const char *line, const char **p);
 int				is_operator_char(char c);
 int				is_whitespace(char c);
 int				is_quote(char c);
-int				str_next_c_index(const char *str, int c, int start);
 char			*read_word(const char *line, const char **p);
 char			*read_operator(const char *line, const char **p);
 char			*read_quoted(const char *line, const char **p, char quote);
@@ -83,6 +82,7 @@ int				tkn_is_word(t_token *token);
 t_token_type	classify_token(const char *raw_token);
 t_quote_type	classify_quote(const char *raw_token);
 int				is_quoted(const char *raw_token, int len, char quote);
+int				str_next_c_index(const char *str, int c, int start);
 int				is_malformed(const char *raw_token, int len);
 
 // debugging
