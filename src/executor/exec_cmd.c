@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 21:53:38 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:14:53 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ void	handle_child(t_ast *ast, t_sh *shell)
 {
 	set_default_signals();
 	if (is_builtin(ast))
-		exit(execute_builtin(ast, shell));
+	{
+		shell->last_code = execute_builtin(ast, shell);
+		free_all(shell);
+		exit(shell->last_code);
+	}
 	execute_command(ast, shell);
 }
 

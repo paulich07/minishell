@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 22:03:58 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:17:24 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ int	execute_pipeline(t_ast *ast, t_sh *shell)
 		}
 		shell->process.is_fork = 1;
 		shell->process.is_in_pipeline = 1;
-		exit(executor(ast->left, shell));
+		status = executor(ast->left, shell);
+		free_all(shell);
+		exit(status);
 	}
 	ignore_signals();
 	close(fd[1]);
