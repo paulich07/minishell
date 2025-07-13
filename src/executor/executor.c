@@ -53,11 +53,14 @@ int	executor(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork, int is
 		}
 		else // processo principale: forki ed esegui cmd o esegui direttamente builtin
 			status = spawn_command(ast, fd_in, fd_out, shell, is_in_pipeline);
+		if (status == EXIT_SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 	}
 	else
 		return (0);
 	update_signal_status(shell);
 	if (!is_fork) // prendere solo status ultimo figlio (non forkato)
 		shell->last_code = status;
+
 	return (shell->last_code);
 }
