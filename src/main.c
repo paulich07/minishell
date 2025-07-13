@@ -6,66 +6,49 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 13:41:00 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:56:49 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static int	was_ctrl_c_pressed(t_sh *shell)
-// {
-// 	if (shell->last_code == 130)
-// 	{
-// 		write(2, "\n", 1);
-// 		free(shell->line);
-// 		shell->line = NULL;
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-
-int	str_is_only_spaces(const char *str)
+static int	was_ctrl_c_pressed(t_sh *shell)
 {
-	int	i;
-
-	i = -1;
-	while (str && str[++i])
+	if (shell->last_code == 130)
 	{
-		if (!is_whitespace(str[i]))
-			return (0);
+		write(2, "\n", 1);
+		free(shell->line);
+		shell->line = NULL;
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 // exit_heredoc_sigint into last status?
-static void	main_loop(t_sh *shell)
+void	main_loop(t_sh *shell)
 {
-	// int		status;
-	char *line;
+	int		status;
 
 	while (1)
 	{
-		line = readline("> ");
-		// update_signal_status(shell);
-		// if (was_ctrl_c_pressed(shell))
-		// 	continue ;
-		if (!line)
+		shell->line = readline("> ");
+		update_signal_status(shell);
+		if (was_ctrl_c_pressed(shell))
+			continue ;
+		if (!shell->line)
 			break ;
-		// if (!str_is_only_spaces(line))
-			// add_history(line);
-		
-		shell->tree = read_command_line(line);
-		print_ast(shell->tree, 1);
-		
-		// expand_ast(shell->tree, shell);
-		// if (!shell->tree)
-		// 	continue ;
-		// status = process_ast_redirections(shell->tree, shell);
-		// if (status < 0)
-		// 	ast_free(shell->tree);
-		// else
-		// 	shell->last_code = executor(shell->tree, 0, 1, shell, 0, 0);
-		free(line);
+		if (ft_strlen(shell->line) > 0)
+			add_history(shell->line);
+		shell->tree = read_command_line(shell->line);
+		expand_ast(shell->tree, shell);
+		if (!shell->tree)
+			continue ;
+		status = process_ast_redirections(shell->tree, shell);
+		if (status < 0)
+			ast_free(shell->tree);
+		else
+			shell->last_code = executor(shell->tree, 0, 1, shell, 0, 0);
+		free(shell->line);
 	}
 }
 
