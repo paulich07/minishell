@@ -88,6 +88,7 @@ SRCS 		:= \
 	$(SRC_DIR)/signals/signals_utils.c \
 	$(SRC_DIR)/executor/executor.c \
 	$(SRC_DIR)/executor/exec_cmd.c \
+	$(SRC_DIR)/executor/exec_cmd_utils.c \
 	$(SRC_DIR)/executor/handle_redir.c \
 	$(SRC_DIR)/executor/handle_heredoc.c \
 	$(SRC_DIR)/executor/fd_utils.c \

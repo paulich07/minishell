@@ -6,83 +6,11 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 18:01:23 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:26:25 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_command_access(char *path)
-{
-	if (access(path, F_OK) == -1)
-	{
-		perror("No such file or directory");
-		return (0);
-	}
-	if (access(path, X_OK) == -1)
-	{
-		perror("Permission denied");
-		return (0);
-	}
-	return (1);
-}
-
-// For every path in PATH, check if cmd works
-char	*find_command_path(char *cmd, char **paths)
-{
-	int		i;
-	char	*temp;
-	char	*full_path;
-
-	if (!cmd || !*cmd || !paths)
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		temp = ft_strjoin(paths[i], "/");
-		if (!temp)
-			return (NULL);
-		full_path = ft_strjoin(temp, cmd);
-		free(temp);
-		if (!full_path)
-			return (NULL);
-		if (access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		i++;
-	}
-	return (NULL);
-}
-
-// if cmd contains a '/' returns cmd
-// otherwise split all the paths and check them one by one
-char	*search_path(char *cmd, t_sh *shell)
-{
-	char *res;
-	char *env_paths;
-	char **split_paths;
-
-	if (!cmd || !*cmd || !shell)
-		return (NULL);
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, F_OK) == 0)
-			return (ft_strdup(cmd));
-		perror("Command not found or permission denied");
-		// ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found or permission denied\n", cmd);
-		return (NULL);
-	}
-	env_paths = get_env_value(shell->env, "PATH");
-	if (!env_paths)
-		return (NULL);
-	split_paths = ft_split(env_paths, ':');
-	// free(env_paths);			// DO NOT FREE RESULT OF get_env_value: it returns an internal pointer variable (it will leak + invalid read)
-	if (!split_paths)
-		return (NULL);
-	res = find_command_path(cmd, split_paths);
-	mtxfree_str(split_paths);
-	return (res);
-}
 
 // crea e gestisce il fork
 int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipeline)
@@ -90,7 +18,6 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 	pid_t pid;
 	int status;
 
-	// fprintf(stderr, "spawn command\n");
 	if (!ast || !ast->argv || !ast->argv[0] || !shell)
 		return (1);
 	if (is_builtin(ast) && !is_in_pipeline)
@@ -125,40 +52,21 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 		return (1); // to do gestire errore
 }
 
-
-// void	handle_cmd_fd(t_ast *ast, int *used_fd_in, int *used_fd_out)
-// {
-	
-// }
-
 // execute command with execve 
 int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 {
-	char	*path;
-	char	**envp;
-	int		used_fd_in;
-	int		used_fd_out;
+	t_process_data	process = (t_process_data){0};
 
+	process.used_fd_in = fd_in;
+	process.used_fd_out = fd_out;
 	if (!ast || !ast->argv || !ast->argv[0])
-	{
-		perror("Invalid node");
-		exit(1);
-	}
-	used_fd_in = fd_in;
-	used_fd_out = fd_out;
-	override_fd_with_ctx(ast, &used_fd_in, &used_fd_out);
-	set_std_fd(used_fd_in, used_fd_out);
-	close_unused_fds(ast, used_fd_in, used_fd_out);
-	path = search_path(ast->argv[0], shell);
-	// to do caso non c'e path
-	envp = env_to_envp(shell->env);
-	// to do aggiungere chiusura fd safe
-	if (!path || !envp)
-		cleanup_and_exit(path, envp, EXIT_CMD_NOT_FOUND, shell);
-	if (!check_command_access(path))
-		cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, shell);
-	execve(path, ast->argv, envp);
-	// to do close fds
-	cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, shell);
+		cleanup_and_exit(&process, shell, 0);
+	init_process_data(ast, &process, shell);
+	if (!process.path || !process.envp)
+		cleanup_and_exit(&process, shell, EXIT_CMD_NOT_FOUND);
+	if (!check_command_access(process.path))
+		cleanup_and_exit(&process, shell, EXIT_PERMISSION_DENIED);
+	execve(process.path, ast->argv, process.envp);
+	cleanup_and_exit(&process, shell, EXIT_PERMISSION_DENIED);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:51 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 13:32:28 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:22:36 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "builtin.h"
 # include "redirections.h"
 # include "utils.h"
+# include "process.h"
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -42,7 +43,7 @@ t_ast	*read_command_line(const char *line);
 // Utils
 void	init_shell(t_sh *shell, char *envp[]);
 void	free_all(t_sh *shell);
-void	cleanup_and_exit(char *path, char **envp, int exit_code, char *err_msg);
+void	cleanup_and_exit(t_process_data *process, t_sh *shell, int exit_code);
 int		is_numeric(const char *str);
 
 void	print_string_matrix(char **matrix);
