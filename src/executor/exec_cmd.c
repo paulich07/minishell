@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 17:22:35 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:01:23 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 int	check_command_access(char *path)
 {
-	if (access(path, F_OK) == -1) {
+	if (access(path, F_OK) == -1)
+	{
 		perror("No such file or directory");
-		// TO DO  ft_printf_fd(STDERR_FILENO, "minishell: %s: No such file or directory\n", path);
 		return (0);
 	}
-	if (access(path, X_OK) == -1) {
+	if (access(path, X_OK) == -1)
+	{
 		perror("Permission denied");
-		// ft_printf_fd(STDERR_FILENO, "minishell: %s: Permission denied\n", path);
 		return (0);
 	}
 	return (1);
 }
 
 // For every path in PATH, check if cmd works
-char *find_command_path(char *cmd, char **paths)
+char	*find_command_path(char *cmd, char **paths)
 {
-	int i;
-	char *temp;
-	char *full_path;
-	
+	int		i;
+	char	*temp;
+	char	*full_path;
+
 	if (!cmd || !*cmd || !paths)
 		return (NULL);
 	i = 0;
@@ -56,7 +56,6 @@ char *find_command_path(char *cmd, char **paths)
 
 // if cmd contains a '/' returns cmd
 // otherwise split all the paths and check them one by one
-// 
 char	*search_path(char *cmd, t_sh *shell)
 {
 	char *res;
@@ -126,6 +125,13 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 		return (1); // to do gestire errore
 }
 
+
+// void	handle_cmd_fd(t_ast *ast, int *used_fd_in, int *used_fd_out)
+// {
+	
+// }
+
+// execute command with execve 
 int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 {
 	char	*path;
@@ -140,7 +146,6 @@ int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 	}
 	used_fd_in = fd_in;
 	used_fd_out = fd_out;
-	// fprintf(stderr, "set ctx\n");
 	override_fd_with_ctx(ast, &used_fd_in, &used_fd_out);
 	set_std_fd(used_fd_in, used_fd_out);
 	close_unused_fds(ast, used_fd_in, used_fd_out);
@@ -149,11 +154,11 @@ int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 	envp = env_to_envp(shell->env);
 	// to do aggiungere chiusura fd safe
 	if (!path || !envp)
-		cleanup_and_exit(path, envp, EXIT_CMD_NOT_FOUND, "command not found");
+		cleanup_and_exit(path, envp, EXIT_CMD_NOT_FOUND, shell);
 	if (!check_command_access(path))
-		cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, "Permission denied");
+		cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, shell);
 	execve(path, ast->argv, envp);
 	// to do close fds
-	cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, "???"); // TO DO
+	cleanup_and_exit(path, envp, EXIT_PERMISSION_DENIED, shell);
 	return (1);
 }

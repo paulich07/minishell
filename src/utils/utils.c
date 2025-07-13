@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:22:58 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 17:21:36 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:59:33 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ t_ast	*read_command_line(const char *line)
 	return (tree);
 }
 
-void	cleanup_and_exit(char *path, char **envp, int exit_code, char *err_msg)
+void	cleanup_and_exit(char *path, char **envp, int exit_code, t_sh *shell)
 {
-	if (err_msg)
-		perror(err_msg);
+	free_all(shell);
+	if (exit_code == EXIT_CMD_NOT_FOUND)
+		perror("Command not found");
+	else if (exit_code == EXIT_PERMISSION_DENIED)
+		perror("Permission denied");
 	free(path);
 	mtxfree_str(envp);
 	exit(exit_code);
