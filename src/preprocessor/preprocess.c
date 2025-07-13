@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:33:59 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 13:33:49 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:39:36 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ int	apply_redirection(t_ast *ast, t_sh *shell)
 		return (-1);
 	cmd = get_command_node(ast->left);
 	if (!cmd)
-		return (fprintf(stderr, "❌ Nessun comando trovato"
-				" per redirection '%s'\n", ast->value), -1);
+		return (-1);
 	if (!cmd->fd_ctx)
 	{
 		cmd->fd_ctx = fd_ctx_new();
@@ -65,7 +64,7 @@ int	apply_redirection(t_ast *ast, t_sh *shell)
 	if (fd == EXIT_HEREDOC_SIGINT)
 		return (EXIT_HEREDOC_SIGINT);
 	if (fd < 0)
-		return (fprintf(stderr, "redir failed\n"), -1);
+		return (-1);
 	set_fd_ctx(ctx, fd, ast->type);
 	return (0);
 }

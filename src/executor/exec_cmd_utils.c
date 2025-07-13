@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 19:26:00 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:50:35 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ char	*search_path(char *cmd, t_sh *shell)
 		if (access(cmd, F_OK) == 0)
 			return (ft_strdup(cmd));
 		perror("Command not found or permission denied");
-		// ft_printf_fd(STDERR_FILENO, "minishell: %s: command not found or permission denied\n", cmd);
 		return (NULL);
 	}
 	env_paths = get_env_value(shell->env, "PATH");
@@ -90,5 +89,5 @@ void	init_process_data(t_ast *ast, t_process_data *process, t_sh *shell)
 	set_std_fd(process->used_fd_in, process->used_fd_out);
 	close_unused_fds(ast, process->used_fd_in, process->used_fd_out);
 	process->path = search_path(ast->argv[0], shell);
-	process->envp = env_to_envp(shell->env);	
+	process->envp = env_to_envp(shell->env);
 }

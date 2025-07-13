@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:07:48 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 19:22:59 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:35:05 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 // execute command
 int		execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell);
+void	handle_child(t_ast *ast, int fd_in, int fd_out, t_sh *shell);
 int		spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipeline);
 
 // execute command utils

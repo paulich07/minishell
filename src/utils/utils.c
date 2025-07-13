@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:22:58 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 18:51:26 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:30:12 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_shell(t_sh *shell, char *envp[])
 	shell->is_interactive = isatty(STDIN_FILENO);
 	shell->fd_stdin = dup(STDIN_FILENO);
 	shell->fd_stdout = dup(STDOUT_FILENO);
+	init_process(&shell->process);
 }
 
 t_ast	*read_command_line(const char *line)
@@ -41,20 +42,6 @@ t_ast	*read_command_line(const char *line)
 	free_raw_tokens(&raw);
 	free_token_list(&lexed);
 	return (tree);
-}
-
-void	cleanup_and_exit(t_process_data *process, t_sh *shell, int exit_code)
-{
-	free_all(shell);
-	if (exit_code == EXIT_CMD_NOT_FOUND)
-		perror("Command not found");
-	else if (exit_code == EXIT_PERMISSION_DENIED)
-		perror("Permission denied");
-	free(process->path);
-	mtxfree_str(process->envp);
-	close(process->used_fd_in);
-	close(process->used_fd_out);
-	exit(exit_code);
 }
 
 void	free_all(t_sh *shell)
