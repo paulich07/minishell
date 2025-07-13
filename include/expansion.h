@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 20:03:43 by sabruma           #+#    #+#             */
-/*   Updated: 2025/06/28 03:51:39 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/13 22:07:54 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #if !defined(EXPANSION_H)
 # define EXPANSION_H
 
-# include "shell.h"
 # include "matrix.h"
 # include "list.h"
 # include "ast.h"

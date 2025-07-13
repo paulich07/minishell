@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 04:39:29 by sabruma           #+#    #+#             */
-/*   Updated: 2025/07/09 19:13:07 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/13 22:12:52 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "expansion.h"
 
 // Expands any other token->value field (except commands)

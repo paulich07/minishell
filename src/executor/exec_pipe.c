@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 17:38:53 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:03:58 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 // crea una pipe che legge dal nodo sinistro e scrive nel destro
 // se e' una pipeline forkata esce col risultato di executor
 // TO DO trovare modo di gestire il wait per tutti nel root
-int	execute_pipeline(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork)
+int	execute_pipeline(t_ast *ast, t_sh *shell)
 {
 	int		fd[2];
 	pid_t	left_pid;
 	int 	status;
 
-	(void)	is_fork;
 	if (!ast || !ast->left || !ast->right)
 		return (127);
 	if (pipe(fd) == -1)	
@@ -42,16 +41,22 @@ int	execute_pipeline(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork
 			dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
 		}
-		if (fd_in != STDIN_FILENO)
+		if (shell->process.fd_in != STDIN_FILENO)
 		{
-			dup2(fd_in, STDIN_FILENO);
-			close(fd_in);
+			dup2(shell->process.fd_in, STDIN_FILENO);
+			close(shell->process.fd_in);
 		}
-		exit(executor(ast->left, fd_in, STDOUT_FILENO, shell, 1, 1));
+		shell->process.is_fork = 1;
+		shell->process.is_in_pipeline = 1;
+		exit(executor(ast->left, shell));
 	}
 	ignore_signals();
 	close(fd[1]);
-	status = executor(ast->right, fd[0], fd_out, shell, 0, 1);
+	shell->process.fd_in = fd[0];
+	shell->process.fd_out = STDOUT_FILENO;
+	shell->process.is_fork = 0;
+	shell->process.is_in_pipeline = 1;
+	status = executor(ast->right, shell);
 	// To do salva in shell lo status se pipe non e' forkata
 	close(fd[0]);
 	// non ci interessa lo status dei nodi a sinistra

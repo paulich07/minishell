@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:51 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 20:30:08 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:10:19 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # define EXIT_PERMISSION_DENIED 126
 # define EXIT_CMD_NOT_FOUND 127
 
-# include "shell.h"
 # include "libft.h"
 # include "ast.h"
+# include "shell.h"
 # include "parser.h"
 # include "expansion.h"
 # include "signals.h"
@@ -28,7 +28,6 @@
 # include "builtin.h"
 # include "redirections.h"
 # include "utils.h"
-# include "process.h"
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -42,7 +41,7 @@ t_ast	*read_command_line(const char *line);
 
 // Process utils
 void	init_process(t_process_data *process);
-void	cleanup_and_exit(t_process_data *process, t_sh *shell, int exit_code);
+void	cleanup_and_exit(t_sh *shell, int exit_code);
 
 // Utils
 void	init_shell(t_sh *shell, char *envp[]);

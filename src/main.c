@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 20:31:36 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:28:07 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	main_loop(t_sh *shell)
 
 	while (1)
 	{
+		init_process(&shell->process);
 		shell->line = readline("> ");
 		update_signal_status(shell);
 		if (!shell->line)
@@ -31,7 +32,7 @@ void	main_loop(t_sh *shell)
 			continue ;
 		status = process_ast_redirections(shell->tree, shell);
 		if (status >= 0)
-			shell->last_code = executor(shell->tree, 0, 1, shell, 0, 0);
+			shell->last_code = executor(shell->tree, shell);
 		ast_free(shell->tree);
 		free(shell->line);
 		shell->line = NULL;

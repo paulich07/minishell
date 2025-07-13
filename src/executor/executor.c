@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 21:45:45 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 21:50:05 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_builtin(t_ast *ast)
 {
-	const char *cmd;
+	const char	*cmd;
 
 	if (!ast || !ast->argv || !ast->argv[0])
 		return (0);
@@ -30,7 +30,7 @@ int	is_builtin(t_ast *ast)
 	);
 }
 
-int	executor(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork, int is_in_pipeline)
+int	executor(t_ast *ast, t_sh *shell)
 {
 	int status;
 
@@ -39,28 +39,27 @@ int	executor(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_fork, int is
 		return (status);
 	// print_ast(ast, 1);
 	if (ast_is_redirection(ast))
-		return (executor(ast->left, fd_in, fd_out, shell, is_fork, is_in_pipeline));
+		return (executor(ast->left, shell));
 	if (ast_is_simple_pipeline(ast) || ast->type == AST_PIPE)
-		status = execute_pipeline(ast, fd_in, fd_out, shell, is_fork);
+		status = execute_pipeline(ast, shell);
 	else if (ast_is_command(ast))
 	{
-		if (is_fork) // uso il padre per eseguire direttamente
+		if (shell->process.is_fork)
 		{
 			if (is_builtin(ast))
-				status = execute_builtin(ast, fd_in, fd_out, shell);
+				status = execute_builtin(ast, shell);
 			else
-				status = execute_command(ast, fd_in, fd_out, shell);
+				status = execute_command(ast, shell);
 		}
-		else // processo principale: forki ed esegui cmd o esegui direttamente builtin
-			status = spawn_command(ast, fd_in, fd_out, shell, is_in_pipeline);
+		else
+			status = spawn_command(ast, shell);
 		if (status == EXIT_SIGQUIT)
 			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 	}
 	else
 		return (0);
 	update_signal_status(shell);
-	if (!is_fork) // prendere solo status ultimo figlio (non forkato)
+	if (!shell->process.is_fork)
 		shell->last_code = status;
-
 	return (shell->last_code);
 }

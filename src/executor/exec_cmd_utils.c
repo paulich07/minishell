@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 19:50:35 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:29:19 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ char	*find_command_path(char *cmd, char **paths)
 // otherwise split all the paths and check them one by one
 char	*search_path(char *cmd, t_sh *shell)
 {
-	char *res;
-	char *env_paths;
-	char **split_paths;
+	char	*res;
+	char	*env_paths;
+	char	**split_paths;
 
 	if (!cmd || !*cmd || !shell)
 		return (NULL);
@@ -83,11 +83,14 @@ char	*search_path(char *cmd, t_sh *shell)
 	return (res);
 }
 
-void	init_process_data(t_ast *ast, t_process_data *process, t_sh *shell)
+void	init_process_data(t_ast *ast, t_sh *shell)
 {
-	override_fd_with_ctx(ast, &process->used_fd_in, &process->used_fd_out);
-	set_std_fd(process->used_fd_in, process->used_fd_out);
-	close_unused_fds(ast, process->used_fd_in, process->used_fd_out);
+	t_process_data	*process;
+
+	process = &shell->process;
+	override_fd_with_ctx(ast, &process->fd_in, &process->fd_out);
+	set_std_fd(process->fd_in, process->fd_out);
+	close_unused_fds(ast, process->fd_in, process->fd_out);
 	process->path = search_path(ast->argv[0], shell);
 	process->envp = env_to_envp(shell->env);
 }

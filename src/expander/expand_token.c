@@ -6,11 +6,10 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 04:38:44 by sabruma           #+#    #+#             */
-/*   Updated: 2025/07/11 03:22:49 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:11:52 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansion.h"
 #include "minishell.h"
 
 static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh);
