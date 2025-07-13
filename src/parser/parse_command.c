@@ -21,8 +21,7 @@ t_ast	*parse_simple_command(t_parser *p)
 	args = NULL;
 	while (p->current && tkn_is_word(p->current))
 	{
-		arg = ast_new(AST_LITERAL, p->current->value,
-				p->current->is_heredoc_word);
+		arg = ast_new(AST_LITERAL, p->current->value, 0);
 		if (!arg)
 			return (ft_lstclear(&args, ast_free_void), NULL);
 		add_arg_and_advance(p, &args, arg);
@@ -49,7 +48,7 @@ static t_ast	*handle_word(t_parser *p, t_ast **cmd)
 
 	if (!p->current || !tkn_is_word(p->current))
 		return (*cmd);
-	arg = ast_new(AST_LITERAL, p->current->value, p->current->is_heredoc_word);
+	arg = ast_new(AST_LITERAL, p->current->value, 0);
 	if (!arg)
 		return (syntax_error_token(p->current->value));
 	if (ft_strchr(p->current->value, '"') || ft_strchr(p->current->value, '\''))
