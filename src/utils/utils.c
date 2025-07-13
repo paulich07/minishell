@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:22:58 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/11 03:49:53 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:21:36 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	init_shell(t_sh *shell, char *envp[])
 	shell->env = envp_to_env(envp);
 	shell->last_code = 0;
 	shell->is_interactive = isatty(STDIN_FILENO);
+	shell->fd_stdin = dup(STDIN_FILENO);
+	shell->fd_stdout = dup(STDOUT_FILENO);
 }
 
 t_ast	*read_command_line(const char *line)
@@ -58,6 +60,8 @@ void	free_all(t_sh *shell)
 	ast_free(shell->tree);
 	if (shell->line)
 		free(shell->line);
+	close(shell->fd_stdin);
+	close(shell->fd_stdout);
 	shell->tree = NULL;
 	shell->line = NULL;
 	shell->env = NULL;

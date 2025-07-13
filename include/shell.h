@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabruma <sabruma@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 20:03:29 by sabruma           #+#    #+#             */
-/*   Updated: 2025/06/21 20:05:26 by sabruma          ###   ########.fr       */
+/*   Updated: 2025/07/13 17:22:37 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ typedef struct s_sh
 	t_ast	*tree;
 	// current readline line
 	char	*line;
+	// dup stdio
+	int		fd_stdin;
+	int		fd_stdout;
 }	t_sh;
 
 #endif

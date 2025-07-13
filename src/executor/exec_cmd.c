@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 20:20:53 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:22:35 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ int spawn_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell, int is_in_pipe
 		return (1); // to do gestire errore
 }
 
-// effettua redirezioni ed esegue comando
 int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 {
 	char	*path;
@@ -134,7 +133,6 @@ int	execute_command(t_ast *ast, int fd_in, int fd_out, t_sh *shell)
 	int		used_fd_in;
 	int		used_fd_out;
 
-	// fprintf(stderr, "execute command\n");
 	if (!ast || !ast->argv || !ast->argv[0])
 	{
 		perror("Invalid node");
