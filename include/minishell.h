@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:51 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 19:22:36 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:30:08 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@
 // Parse line
 t_ast	*read_command_line(const char *line);
 
+// Process utils
+void	init_process(t_process_data *process);
+void	cleanup_and_exit(t_process_data *process, t_sh *shell, int exit_code);
+
 // Utils
 void	init_shell(t_sh *shell, char *envp[]);
 void	free_all(t_sh *shell);
-void	cleanup_and_exit(t_process_data *process, t_sh *shell, int exit_code);
 int		is_numeric(const char *str);
 
 void	print_string_matrix(char **matrix);
