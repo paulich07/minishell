@@ -10,9 +10,11 @@ static t_ast	*init_f_node(t_parser *p)
 	filename = ft_strdup(p->current->value);
 	if (!filename)
 		return (NULL);
-	f_node = ast_new(AST_LITERAL, filename, 0);
+	f_node = ast_new(AST_LITERAL, filename, p->current->is_heredoc_word, 0);
 	if (f_node)
 		f_node->quote = p->current->quote;
+	if (str_contains_quote(p->current->value))
+		f_node->no_expand_content = 1;
 	free(filename);
 	return (f_node);
 }
