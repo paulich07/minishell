@@ -1,15 +1,19 @@
 #include "ast.h"
 
 // wrapper for project specific matrix handling
-void print_string_matrix(char **matrix)
+void	print_string_matrix(char **matrix)
 {
+	size_t	i;
+
 	if (!matrix)
 	{
 		printf("(null matrix)\n");
-		return;
+		return ;
 	}
-	for (size_t i = 0; matrix[i]; i++)
+	i = 0;
+	while (matrix[i])
 	{
 		printf("[%zu]: \"%s\"\n", i, matrix[i]);
+		i++;
 	}
 }

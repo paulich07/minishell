@@ -70,6 +70,7 @@ SRCS 		:= \
 	$(SRC_DIR)/env/env_internal.c \
 	$(SRC_DIR)/env/env_utils.c \
 	$(SRC_DIR)/feature1/sum.c \
+	$(SRC_DIR)/utils/char_utils.c \
 	$(SRC_DIR)/utils/utils.c \
 	$(SRC_DIR)/utils/string_utils.c \
 	$(SRC_DIR)/utils/tokenizer_utils.c \

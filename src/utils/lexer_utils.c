@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 // add strncmp of && and || if gonna do bonus :──)
@@ -23,7 +24,7 @@ t_token_type	classify_token(const char *raw_token)
 	return (TKN_WORD);
 }
 
-t_quote_type classify_quote(const char *raw_token)
+t_quote_type	classify_quote(const char *raw_token)
 {
 	size_t	len;
 
@@ -38,7 +39,7 @@ t_quote_type classify_quote(const char *raw_token)
 	return (N_QUOTE);
 }
 
-int is_quoted(const char *raw_token, int len, char quote)
+int	is_quoted(const char *raw_token, int len, char quote)
 {
 	return (raw_token[0] == quote && raw_token[len - 1] == quote);
 }
