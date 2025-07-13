@@ -13,7 +13,7 @@
 #include "ast.h"
 
 // create generic node
-t_ast	*ast_new(t_ast_type type, char *value)
+t_ast	*ast_new(t_ast_type type, char *value, int prevent_expansion)
 {
 	t_ast	*node;
 
@@ -30,6 +30,7 @@ t_ast	*ast_new(t_ast_type type, char *value)
 	node->argv = NULL;
 	node->args = NULL;
 	node->fd_ctx = NULL;
+	node->prevent_expansion = prevent_expansion;
 	if (value)
 		node->value = ft_strdup(value);
 	return (node);

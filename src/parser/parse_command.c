@@ -21,7 +21,8 @@ t_ast	*parse_simple_command(t_parser *p)
 	args = NULL;
 	while (p->current && tkn_is_word(p->current))
 	{
-		arg = ast_new(AST_LITERAL, p->current->value);
+		arg = ast_new(AST_LITERAL, p->current->value,
+				p->current->is_heredoc_word);
 		if (!arg)
 			return (ft_lstclear(&args, ast_free_void), NULL);
 		add_arg_and_advance(p, &args, arg);
@@ -38,15 +39,33 @@ static t_ast	*handle_redirection(t_parser *p, t_ast **cmd)
 		if (!*cmd)
 			return (syntax_error_token(p->current->value));
 	}
-	return (*cmd);
+	return (NULL);
+}
+
+static t_ast	*handle_word(t_parser *p, t_ast **cmd)
+{
+	t_ast		*arg;
+	t_ast		*base_cmd;
+
+	if (!p->current || !tkn_is_word(p->current))
+		return (*cmd);
+	arg = ast_new(AST_LITERAL, p->current->value, p->current->is_heredoc_word);
+	if (!arg)
+		return (syntax_error_token(p->current->value));
+	if (ft_strchr(p->current->value, '"') || ft_strchr(p->current->value, '\''))
+		arg->prevent_expansion = 1;
+	base_cmd = unwrap_command(*cmd);
+	if (!base_cmd)
+		return (syntax_error_token(p->current->value));
+	add_arg_and_advance(p, &base_cmd->args, arg);
+	return (NULL);
 }
 
 // Parse a command: simple_command redirection*
 t_ast	*parse_command(t_parser *p)
 {
-	t_ast		*base_cmd;
 	t_ast		*cmd;
-	t_ast		*arg;
+	t_ast		*error;
 
 	cmd = parse_simple_command(p);
 	if (!cmd)
@@ -55,17 +74,12 @@ t_ast	*parse_command(t_parser *p)
 	{
 		if (!tkn_is_redirection(p->current) && !tkn_is_word(p->current))
 			break ;
-		handle_redirection(p, &cmd);
-		if (p->current && tkn_is_word(p->current))
-		{
-			arg = ast_new(AST_LITERAL, p->current->value);
-			if (!arg)
-				return (NULL);
-			base_cmd = unwrap_command(cmd);
-			if (!base_cmd)
-				return (syntax_error_token(p->current->value));
-			add_arg_and_advance(p, &base_cmd->args, arg);
-		}
+		error = handle_redirection(p, &cmd);
+		if (error)
+			return (error);
+		error = handle_word(p, &cmd);
+		if (error)
+			return (error);
 	}
 	return (cmd);
 }

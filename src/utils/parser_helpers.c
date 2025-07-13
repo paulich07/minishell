@@ -15,6 +15,8 @@
 
 t_ast	*unwrap_command(t_ast *node)
 {
+	if (!node)
+		return (NULL);
 	while (ast_is_redirection_chain(node))
 		node = node->left;
 	if (ast_is_command(node))

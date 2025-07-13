@@ -28,7 +28,7 @@ int	remove_quotes(char *value, int quote_idx)
 	ft_memmove(value + quote_idx, value + quote_idx + 1, next - quote_idx - 1);
 	ft_memmove(value + next - 1, value + next + 1, len - next);
 	value[len - 2] = '\0';
-	return (next - 2);
+	return (next - 1);
 }
 
 int	str_next_c_index(const char *str, int c, int start)
@@ -52,8 +52,8 @@ char	*strip_if_quoted(char *value)
 {
 	int	i;
 
-	i = -1;
-	while (value && value[++i])
+	i = 0;
+	while (value && value[i])
 	{
 		if (is_quote(value[i]))
 		{
@@ -61,6 +61,8 @@ char	*strip_if_quoted(char *value)
 			if (i == -1)
 				return (free(value), NULL);
 		}
+		else
+			i++;
 	}
 	return (value);
 }

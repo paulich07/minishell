@@ -17,7 +17,7 @@ t_ast	*ast_binary_op(t_ast_type type, char *op, t_ast *left, t_ast *right)
 {
 	t_ast	*opnode;
 
-	opnode = ast_new(type, op);
+	opnode = ast_new(type, op, 0);
 	if (!opnode)
 		return (ast_free(left), ast_free(right), NULL);
 	opnode->left = left;

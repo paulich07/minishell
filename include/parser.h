@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#if !defined(PARSER_H)
+#ifndef PARSER_H
 # define PARSER_H
 
 # include "libft.h"
@@ -46,6 +46,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	t_quote_type	quote;
+	int				is_heredoc_word;
 	char			*value;
 	char			*error;
 }	t_token;

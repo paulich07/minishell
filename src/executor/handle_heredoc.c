@@ -27,7 +27,7 @@ char	*expand_variables(char *line, t_sh *shell)
 	return (expand_token(line, N_QUOTE, shell));
 }
 
-int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
+int	heredoc_loop(char *delim, int prevent_expansion, int fd_out, t_sh *shell)
 {
 	char	*line;
 	char	*expanded_line;
@@ -43,7 +43,9 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 		}
 		if (!line || strcmp(line, delim) == 0)
 			break ;
-		expanded_line = expand_variables(line, shell);
+		expanded_line = line;
+		if (!prevent_expansion)
+			expanded_line = expand_variables(line, shell);
 		if (!expanded_line)
 			return (free(line), -1);
 		write(fd_out, expanded_line, ft_strlen(expanded_line));
@@ -71,7 +73,8 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 	init_heredoc_signals();
 	if (pipe(fd) == -1)
 		return (restore_state(saved_stdin), perror("pipe"), -1);
-	status = heredoc_loop(ast->right->value, fd[1], shell);
+	status = heredoc_loop(ast->right->value, ast->right->prevent_expansion,
+		fd[1], shell);
 	restore_state(saved_stdin);
 	close(fd[1]);
 	if (status == EXIT_SIGINT)

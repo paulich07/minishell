@@ -27,7 +27,7 @@ char	*expand_token(const char *str, t_quote_type quote, t_sh *shell)
 	if (!str)
 		return (NULL);
 	if (quote == S_QUOTE)
-		return (strip_if_quoted(ft_strdup(str)));
+		return (ft_strdup(str));
 	sb = sb_create(64);
 	if (!sb)
 		return (NULL);
@@ -71,7 +71,6 @@ static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
 			sb_append_char(sb, str[i++]);
 	}
 	result = sb_build(sb);
-	result = strip_if_quoted(result);
 	return (result);
 }
 

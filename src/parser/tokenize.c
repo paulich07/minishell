@@ -38,6 +38,16 @@ int	insert_node(t_list **tokens, const char *line, char *start, char *word)
 	return (1);
 }
 
+char	*read_next_token(const char *line, const char **p)
+{
+	if (is_quote(**p))
+		return (read_quoted(line, p, **p));
+	else if (is_operator_char(**p))
+		return (read_operator(line, p));
+	else
+		return (read_word(line, p));
+}
+
 // Creates tokens out of the command line
 // separated by spaces or operators
 // saves them into a t_list* of char*
@@ -64,14 +74,4 @@ t_list	*tokenize(const char *line)
 			return (free_raw_tokens(&tokens), free(word), NULL);
 	}
 	return (tokens);
-}
-
-char	*read_next_token(const char *line, const char **p)
-{
-	if (is_quote(**p))
-		return (read_quoted(line, p, **p));
-	else if (is_operator_char(**p))
-		return (read_operator(line, p));
-	else
-		return (read_word(line, p));
 }

@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#ifndef REDIRECTIONS_H
+# define REDIRECTIONS_H
+
+# include "ast.h"
 
 // redirection helpers
 int		handle_redir_in(t_ast *node, t_sh *shell);
@@ -20,7 +23,7 @@ int		handle_append(t_ast *node, t_sh *shell);
 // heredoc
 void	restore_state(int saved_stdin);
 char	*expand_variables(char *line, t_sh *shell);
-int		heredoc_loop(char *delim, int fd_out, t_sh *shell);
+int		heredoc_loop(char *delim, int no_expansion, int fd_out, t_sh *shell);
 int		handle_heredoc(t_ast *node, t_sh *shell);
 
 // utils
@@ -34,3 +37,5 @@ void	override_fd_with_ctx(t_ast *ast, int *new_fd_in, int *new_fd_out);
 int		apply_redirection(t_ast *ast, t_sh *shell);
 int		process_ast_redirections(t_ast *node, t_sh *shell);
 void	close_unused_fds(t_ast *ast, int used_fd_in, int used_fd_out);
+
+#endif

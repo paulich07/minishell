@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansion.h"
+#include "minishell.h"
 #include <readline/readline.h>
 
 // $var -> $var value
@@ -27,10 +27,15 @@ void	should_expand_token(t_ast *node, void *ctx)
 	shell = (t_sh *)ctx;
 	if (!node)
 		return ;
-	if (node->type == AST_COMMAND)
-		expand_command_args(node, shell);
-	else if (node->value && node->quote != S_QUOTE)
-		expand_token_value(node, shell);
+	if (!node->prevent_expansion)
+	{
+		if (node->type == AST_COMMAND)
+			expand_command_args(node, shell);
+		else if (node->value && node->quote != S_QUOTE)
+			expand_token_value(node, shell);
+	}
+	if (node->value)
+		strip_if_quoted(node->value);
 }
 
 // Handles heredoc input, expands lines only if delimiter is unquoted

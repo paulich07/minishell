@@ -16,7 +16,7 @@ t_ast	*ast_error(char *msg)
 {
 	t_ast	*error_node;
 
-	error_node = ast_new(AST_ERROR, NULL);
+	error_node = ast_new(AST_ERROR, NULL, 0);
 	if (!error_node)
 		return (NULL);
 	error_node->error = ft_strdup(msg);

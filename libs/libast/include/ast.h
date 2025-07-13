@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#if !defined(AST_H)
+#ifndef AST_H
 # define AST_H
 
 # include "libft.h"
@@ -65,6 +65,7 @@ typedef struct s_ast
 	char			**argv;
 	char			*error;
 	t_fctx			*fd_ctx;
+	int				prevent_expansion;
 }	t_ast;
 
 typedef struct s_ast_filter_ctx
@@ -81,7 +82,7 @@ void	ast_free_void(void *tree);
 t_ast	*astdup(const t_ast *node);
 
 // create
-t_ast	*ast_new(t_ast_type type, char *value);
+t_ast	*ast_new(t_ast_type type, char *value, int prevent_expansion);
 t_ast	*ast_cmd(t_list *args);
 t_ast	*ast_binary_op(t_ast_type type, char *op, t_ast *left, t_ast *right);
 t_ast	*ast_error(char *msg);

@@ -21,9 +21,9 @@ t_ast	*astdup(const t_ast *node)
 	if (!node)
 		return (NULL);
 	if (node->value)
-		clone = ast_new(node->type, node->value);
+		clone = ast_new(node->type, node->value, node->prevent_expansion);
 	else
-		clone = ast_new(node->type, NULL);
+		clone = ast_new(node->type, NULL, node->prevent_expansion);
 	if (node->argv)
 		clone->argv = mtxdup_str(node->argv);
 	if (node->error)
