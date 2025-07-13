@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 17:04:37 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:29:03 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 		update_signal_status(shell);
 		if (shell->last_code != 0)
 		{
-			write(2, "\n", 1);
 			return (free(line), EXIT_SIGINT);
 		}
 		if (!line || strcmp(line, delim) == 0)
