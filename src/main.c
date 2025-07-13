@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 22:28:07 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:32:32 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	main_loop(t_sh *shell)
 		if (ft_strlen(shell->line) > 0)
 			add_history(shell->line);
 		expand_ast(shell->tree, shell);
+		shell->last_code = 0;
 		if (!shell->tree)
 			continue ;
 		status = process_ast_redirections(shell->tree, shell);

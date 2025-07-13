@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:28:31 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 12:40:18 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:40:02 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	update_signal_status(t_sh *shell)
 		return ;
 	if (g_last_signal != 0)
 	{
-		shell->last_code = 128 + g_last_signal;
+		if (g_last_signal == SIGINT)
+			shell->last_code = EXIT_SIGINT;
+		if (g_last_signal == SIGQUIT)
+			shell->last_code = EXIT_SIGQUIT;
 		g_last_signal = 0;
 	}
 }
