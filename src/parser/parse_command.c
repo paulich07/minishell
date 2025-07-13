@@ -16,7 +16,7 @@ t_ast	*parse_simple_command(t_parser *p)
 	t_ast	*arg;
 	t_list	*args;
 
-	if (!p->current || !tkn_is_word(p->current))
+	if (!p->current)
 		return (syntax_error_token("newline"));
 	args = NULL;
 	while (p->current && tkn_is_word(p->current))
