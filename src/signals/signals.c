@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:28:31 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:59:15 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:41:30 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_signals()
 	// signal(SIGQUIT, SIG_IGN); // to do levare prima di pushare
 }
 
-void	init_hereodc_signals()
+void	init_heredoc_signals()
 {
 	struct sigaction	sa;
 

@@ -6,19 +6,19 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:28:31 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:39:36 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:40:18 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_newline(int sig)
+void	print_newline(int sig)
 {
 	(void)	sig;
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void update_signal_status(t_sh *shell)
+void	update_signal_status(t_sh *shell)
 {
 	if (!shell)
 		return ;

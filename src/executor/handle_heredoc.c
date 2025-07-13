@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 12:34:08 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:39:07 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 	saved_stdin = dup(STDIN_FILENO);
 	if (saved_stdin == -1)
 		return (perror("dup stdin"), -1);
-	init_hereodc_signals();
+	init_heredoc_signals();
 	if (pipe(fd) == -1)
 	{
 		init_signals();

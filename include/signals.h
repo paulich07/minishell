@@ -6,13 +6,14 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:12:47 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 21:43:43 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:41:30 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #if !defined(SIGNALS_H)
 # define SIGNALS_H
 
+# include "ast.h"
 # include <signal.h>
 
 # define EXIT_HEREDOC_SIGINT	-2
@@ -39,12 +40,12 @@ extern volatile sig_atomic_t	g_last_signal;
 
 // core
 void	init_signals(void);
+void	init_heredoc_signals(void);
 void	set_default_signals(void);
 void	ignore_signals(void);
 
 // handlers
 void	handler_sigaction(int sig);
-void	handler_default_sigaction(int sig);
 void	handler_sigint_heredoc(int sig);
 
 // utils
