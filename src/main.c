@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:51:36 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:41:10 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:37:08 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	main_loop(t_sh *shell)
 		expand_ast(shell->tree, shell);
 		if (!shell->tree)
 			continue ;
-		status = preprocess_redirections(shell->tree, shell);
+		status = process_ast_redirections(shell->tree, shell);
 		if (status < 0)
 			ast_free(shell->tree);
 		else

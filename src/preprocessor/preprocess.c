@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:33:59 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:40:59 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:36:47 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ int	apply_redirection(t_ast *ast, t_sh *shell)
 
 // recursively applies all redirections
 // returns 0 on success, -1 if any error occured
-int	preprocess_redirections(t_ast *ast, t_sh *shell)
+int	process_ast_redirections(t_ast *ast, t_sh *shell)
 {
 	if (!ast)
 		return (0);
-	if (preprocess_redirections(ast->left, shell) != 0)
+	if (process_ast_redirections(ast->left, shell) != 0)
 		return (-1);
-	if (preprocess_redirections(ast->right, shell) != 0)
+	if (process_ast_redirections(ast->right, shell) != 0)
 		return (-1);
 	if (ast_is_redirection(ast))
 		return (apply_redirection(ast, shell));

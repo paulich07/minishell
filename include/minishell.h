@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:52:51 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/12 22:22:27 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:35:25 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "signals.h"
 # include "executor.h"
 # include "builtin.h"
-# include "preprocessor.h"
+# include "redirections.h"
 # include "utils.h"
 
 # include <fcntl.h>
