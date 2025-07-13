@@ -6,15 +6,16 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:30:30 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 12:39:07 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:47:15 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	restore_state(int saved_stdin, int stdin_to_apply)
+void	restore_state(int saved_stdin)
 {
-	dup2(saved_stdin, STDIN_FILENO);
+	if (dup2(saved_stdin, STDIN_FILENO) == -1)
+		perror("error dup2");
 	close(saved_stdin);
 	init_signals();
 }
@@ -56,7 +57,7 @@ int	heredoc_loop(char *delim, int fd_out, t_sh *shell)
 // handles heredoc with the buffer of the pipe instead of a temp file
 // uses close(STDIN_FILENO) for exiting the loop with Ctrl-C
 // and then resets it
-// (if ctrl-c) update status and close the entire pipe
+// if ctrl-c is pressed, update status and close the entire pipe
 int	handle_heredoc(t_ast *ast, t_sh *shell)
 {
 	int		fd[2];
@@ -70,13 +71,9 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 		return (perror("dup stdin"), -1);
 	init_heredoc_signals();
 	if (pipe(fd) == -1)
-	{
-		init_signals();
-		close(saved_stdin);
-		return (perror("pipe"), -1);
-	}
+		return (restore_state(saved_stdin), perror("pipe"), -1);
 	status = heredoc_loop(ast->right->value, fd[1], shell);
-	restore_state(saved_stdin, STDIN_FILENO);
+	restore_state(saved_stdin);
 	close(fd[1]);
 	if (status == EXIT_SIGINT)
 		return (close(fd[0]), EXIT_HEREDOC_SIGINT);
