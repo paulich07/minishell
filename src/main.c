@@ -44,11 +44,12 @@ void	main_loop(t_sh *shell)
 		if (!shell->tree)
 			continue ;
 		status = process_ast_redirections(shell->tree, shell);
-		if (status < 0)
-			ast_free(shell->tree);
-		else
+		if (status >= 0)
 			shell->last_code = executor(shell->tree, 0, 1, shell, 0, 0);
+		ast_free(shell->tree);
 		free(shell->line);
+		shell->line = NULL;
+		shell->tree = NULL;
 	}
 }
 
