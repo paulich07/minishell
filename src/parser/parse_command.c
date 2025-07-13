@@ -56,7 +56,7 @@ t_ast	*parse_command(t_parser *p)
 		if (!tkn_is_redirection(p->current) && !tkn_is_word(p->current))
 			break ;
 		handle_redirection(p, &cmd);
-		if (tkn_is_word(p->current))
+		if (p->current && tkn_is_word(p->current))
 		{
 			arg = ast_new(AST_LITERAL, p->current->value);
 			if (!arg)
