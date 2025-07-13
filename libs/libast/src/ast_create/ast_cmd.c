@@ -18,7 +18,7 @@ t_ast	*ast_cmd(t_list *args)
 {
 	t_ast	*cmd;
 
-	cmd = ast_new(AST_COMMAND, NULL, 0);
+	cmd = ast_new(AST_COMMAND, NULL, 0, 0);
 	if (!cmd)
 		return (NULL);
 	cmd->args = args;

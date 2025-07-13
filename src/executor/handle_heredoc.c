@@ -73,8 +73,8 @@ int	handle_heredoc(t_ast *ast, t_sh *shell)
 	init_heredoc_signals();
 	if (pipe(fd) == -1)
 		return (restore_state(saved_stdin), perror("pipe"), -1);
-	status = heredoc_loop(ast->right->value, ast->right->prevent_expansion,
-		fd[1], shell);
+	status = heredoc_loop(ast->right->value, ast->right->no_expand_content,
+			fd[1], shell);
 	restore_state(saved_stdin);
 	close(fd[1]);
 	if (status == EXIT_SIGINT)

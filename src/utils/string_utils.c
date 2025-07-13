@@ -72,3 +72,8 @@ void	str_skip_spaces(const char **str)
 	while (str && **str && is_whitespace(**str))
 		(*str)++;
 }
+
+int	str_contains_quote(const char *str)
+{
+	return (ft_strchr(str, '"') || ft_strchr(str, '\''));
+}

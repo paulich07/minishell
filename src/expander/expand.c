@@ -26,7 +26,7 @@ void	should_expand_token(t_ast *node, void *ctx)
 	shell = (t_sh *)ctx;
 	if (!node)
 		return ;
-	if (!node->prevent_expansion)
+	if (!node->no_expand_self)
 	{
 		if (node->type == AST_COMMAND)
 			expand_command_args(node, shell);

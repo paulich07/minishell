@@ -17,5 +17,6 @@
 
 int			str_next_c_index(const char *str, int c, int start);
 char		*strip_if_quoted(char *value);
+int			str_contains_quote(const char *str);
 
 #endif
