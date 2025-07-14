@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_command.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/14 14:56:29 by plichota          #+#    #+#             */
+/*   Updated: 2025/07/14 14:56:36 by plichota         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-#include "parser.h"
 
 static void	add_arg_and_advance(t_parser *p, t_list **args, t_ast *arg)
 {

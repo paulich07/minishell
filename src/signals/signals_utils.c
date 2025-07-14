@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 18:28:31 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 23:40:02 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:55:00 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_newline(int sig)
 {
-	(void)	sig;
+	(void) sig;
 	write(STDERR_FILENO, "\n", 1);
 }
 

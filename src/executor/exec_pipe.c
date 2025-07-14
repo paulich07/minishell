@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 23:41:16 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:03:34 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	execute_pipeline(t_ast *ast, t_sh *shell)
 {
 	int		fd[2];
 	pid_t	left_pid;
-	int 	status;
+	int		status;
 
 	if (!ast || !ast->left || !ast->right)
 		return (127);
-	if (pipe(fd) == -1)	
+	if (pipe(fd) == -1)
 		return (perror("pipe failed"), 1);
 	left_pid = fork();
 	if (left_pid < 0)
@@ -59,21 +59,16 @@ int	execute_pipeline(t_ast *ast, t_sh *shell)
 	shell->process.is_fork = 0;
 	shell->process.is_in_pipeline = 1;
 	status = executor(ast->right, shell);
-	// To do salva in shell lo status se pipe non e' forkata
 	close(fd[0]);
-	// non ci interessa lo status dei nodi a sinistra
 	waitpid(left_pid, NULL, 0);
 	init_signals();
-	// while (waitpid(-1, NULL, 0) > 0);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status)); 
+		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 	{
 		g_last_signal = WTERMSIG(status);
 		update_signal_status(shell);
 		return (shell->last_code);
 	}
-	// else
-	// 	return (1); // to do gestire errore
 	return (status);
 }

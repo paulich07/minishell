@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:12:47 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 12:41:30 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:02:43 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define EXIT_SIGINT			130		/* Ctrl-C */
 # define EXIT_SIGQUIT			131		/* Ctrl-\ */
 // # define EXIT_SIGTERM		143		/* kill */
-// # define EXIT_SIGPIPE		141		/* scrivere su pipe con lettura chiusa */
+// # define EXIT_SIGPIPE		141		/* write on pipe with no reader */
 // # define EXIT_SIGSTP			146		/* Ctrl-Z End of Transmission*/
 
 /*

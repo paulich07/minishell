@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 23:42:10 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:53:03 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@ int	spawn_command(t_ast *ast, t_sh *shell)
 	init_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status))
 	{
 		g_last_signal = WTERMSIG(status);
 		update_signal_status(shell);
 		return (shell->last_code);
 	}
-	else
-		return (1);
+	return (1);
 }
 
 // execute command with execve 

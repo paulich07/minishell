@@ -6,11 +6,9 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 17:54:35 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 17:54:35 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:02:57 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef UTILS_H
 # define UTILS_H

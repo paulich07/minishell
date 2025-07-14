@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 22:29:19 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:02:09 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ char	*find_command_path(char *cmd, char **paths)
 
 // if cmd contains a '/' returns cmd
 // otherwise split all the paths and check them one by one
+// free(env_paths);
+// DO NOT FREE RESULT OF get_env_value: it returns an internal
+// pointer variable (it will leak + invalid read)
 char	*search_path(char *cmd, t_sh *shell)
 {
 	char	*res;
@@ -75,7 +78,6 @@ char	*search_path(char *cmd, t_sh *shell)
 	if (!env_paths)
 		return (NULL);
 	split_paths = ft_split(env_paths, ':');
-	// free(env_paths);			// DO NOT FREE RESULT OF get_env_value: it returns an internal pointer variable (it will leak + invalid read)
 	if (!split_paths)
 		return (NULL);
 	res = find_command_path(cmd, split_paths);
