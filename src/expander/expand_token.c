@@ -6,25 +6,13 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 04:38:44 by sabruma           #+#    #+#             */
-/*   Updated: 2025/07/13 22:11:52 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:55:33 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_code(t_sb *sb, t_sh *sh)
-{
-	char	*val;
-
-	val = ft_itoa(sh->last_code);
-	if (val)
-	{
-		sb_append_str(sb, val);
-		free(val);
-	}
-}
-
-static void	handle_var(const char *str, size_t *i, t_sb *sb, t_sh *sh)
+void	_expand_variable(const char *str, size_t *i, t_sb *sb, t_sh *sh)
 {
 	size_t	start;
 	char	*key;
@@ -40,7 +28,7 @@ static void	handle_var(const char *str, size_t *i, t_sb *sb, t_sh *sh)
 		sb_append_str(sb, val);
 }
 
-static void	handle_dollar(const char *str, size_t *i, t_sb *sb)
+void	_expand_dollar(const char *str, size_t *i, t_sb *sb)
 {
 	int		next_quote;
 
@@ -58,11 +46,23 @@ static void	handle_dollar(const char *str, size_t *i, t_sb *sb)
 	(*i)++;
 }
 
-static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
+void	_expand_handle_dollar(const char *str, t_sb *sb, t_sh *sh, size_t *i)
+{
+	(*i)++;
+	if (str[*i] == '?')
+	{
+		_expand_last_code(sb, sh);
+		(*i)++;
+	}
+	else if (str[*i] == '_' || ft_isalpha(str[*i]))
+		_expand_variable(str, i, sb, sh);
+	else
+		_expand_dollar(str, i, sb);
+}
+
+static char	*_expand_token_loop(const char *str, t_sb *sb, t_sh *sh)
 {
 	size_t	i;
-	char	*result;
-	int		res_i;
 	int		quote;
 
 	i = 0;
@@ -75,31 +75,15 @@ static char	*substitute_vars(const char *str, t_sb *sb, t_sh *sh)
 			quote = 0;
 		if (str[i] == '\'' && quote != '"')
 		{
-			res_i = str_next_c_index(str, str[i], i);
-			if (res_i == -1)
-				res_i = ft_strlen(str);
-			while (i <= (size_t)res_i)
-				sb_append_char(sb, str[i++]);
+			_expand_skip_squotes(str, sb, &i);
 			continue ;
 		}
 		if (str[i] == '$' && str[i + 1])
-		{
-			i++;
-			if (str[i] == '?')
-			{
-				handle_code(sb, sh);
-				i++;
-			}
-			else if (str[i] == '_' || ft_isalpha(str[i]))
-				handle_var(str, &i, sb, sh);
-			else
-				handle_dollar(str, &i, sb);
-		}
+			_expand_handle_dollar(str, sb, sh, &i);
 		else
 			sb_append_char(sb, str[i++]);
 	}
-	result = sb_build(sb);
-	return (result);
+	return (sb_build(sb));
 }
 
 // Expands a single token string (e.g., "hello$USER") according to quote type
@@ -115,7 +99,7 @@ char	*expand_token(const char *str, t_quote_type quote, t_sh *shell)
 	sb = sb_create(64);
 	if (!sb)
 		return (NULL);
-	res = substitute_vars(str, sb, shell);
+	res = _expand_token_loop(str, sb, shell);
 	sb_free(sb);
 	return (res);
 }
