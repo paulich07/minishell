@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 04:39:29 by sabruma           #+#    #+#             */
-/*   Updated: 2025/07/14 14:57:20 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:38:06 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ void	expand_token_value(t_ast *node, t_sh *shell)
 	node->value = exp;
 }
 
+void	expansion_error(t_ast *cmd, t_list *exp)
+{
+	cmd->error = ft_strdup("expansion error");
+	return (ft_lstclear(&exp, NULL));
+}
+
 // Expands a command node's arguments and fills argv/argc
 void	expand_command_args(t_ast *cmd, t_sh *shell)
 {
@@ -44,10 +50,7 @@ void	expand_command_args(t_ast *cmd, t_sh *shell)
 		exp_str = expand_token(arg->value, arg->quote, shell);
 		exp_str = strip_if_quoted(exp_str);
 		if (!exp_str)
-		{
-			cmd->error = ft_strdup("expansion error");
-			return (ft_lstclear(&exp, NULL));
-		}
+			expansion_error(cmd, exp);
 		if (arg->quote == N_QUOTE)
 			split_command_args(&exp, exp_str);
 		else

@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 13:17:05 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/14 14:59:41 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:29:19 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ int	is_builtin(t_ast *ast)
 	if (!ast || !ast->argv || !ast->argv[0])
 		return (0);
 	cmd = ast->argv[0];
-	if (
-		ft_strcmp(cmd, "echo") == 0 ||
-		ft_strcmp(cmd, "cd") == 0 ||
-		ft_strcmp(cmd, "pwd") == 0 ||
-		ft_strcmp(cmd, "export") == 0 ||
-		ft_strcmp(cmd, "unset") == 0 ||
-		ft_strcmp(cmd, "env") == 0 ||
-		ft_strcmp(cmd, "exit") == 0
-	)
+	if (ft_strcmp(cmd, "echo") == 0
+		|| ft_strcmp(cmd, "cd") == 0
+		|| ft_strcmp(cmd, "pwd") == 0
+		|| ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0
+		|| ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0)
 		is_builtin = 1;
 	return (is_builtin);
 }
