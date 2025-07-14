@@ -6,7 +6,7 @@
 /*   By: plichota <plichota@student.42firenze.it    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:07:48 by plichota          #+#    #+#             */
-/*   Updated: 2025/07/13 21:41:20 by plichota         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:47:30 by plichota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*find_command_path(char *cmd, char **paths);
 void	init_process_data(t_ast *ast, t_sh *shell);
 
 // execute pipeline
+void	handle_pipe_child(int *fd, t_ast *ast, t_sh *shell);
+int		handle_pipe_parent(int *fd, pid_t left_pid, t_sh *shell, t_ast *ast);
 int		execute_pipeline(t_ast *ast, t_sh *shell);
 
 // execute operator
@@ -38,6 +40,7 @@ int		execute_pipeline(t_ast *ast, t_sh *shell);
 int		execute_builtin(t_ast *ast, t_sh *shell);
 
 // core
+int		dispatch_command(t_ast *ast, t_sh *shell);
 int		executor(t_ast *ast, t_sh *shell);
 int		is_builtin(t_ast *ast);
 
