@@ -42,6 +42,7 @@ void	expand_command_args(t_ast *cmd, t_sh *shell)
 	{
 		arg = (t_ast *)curr->content;
 		exp_str = expand_token(arg->value, arg->quote, shell);
+		exp_str = strip_if_quoted(exp_str);
 		if (!exp_str)
 		{
 			cmd->error = ft_strdup("expansion error");
