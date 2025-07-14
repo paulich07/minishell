@@ -17,11 +17,12 @@ char	*read_word(const char *line, const char **p)
 }
 
 // handles also 2-char operators (>>, <<, ||, &&)
+// TODO: for bonus remove the && **p != '|'
 char	*read_operator(const char *line, const char **p)
 {
 	const char	*start = *p;
 
-	if (is_operator_char(**p) && *(*p + 1) == **p)
+	if (is_operator_char(**p) && *(*p + 1) == **p && **p != '|')
 		*p += 2;
 	else
 		(*p)++;

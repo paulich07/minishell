@@ -72,6 +72,7 @@ SRCS 		:= \
 	$(SRC_DIR)/utils/char_utils.c \
 	$(SRC_DIR)/utils/utils.c \
 	$(SRC_DIR)/utils/string_utils.c \
+	$(SRC_DIR)/utils/token_utils.c \
 	$(SRC_DIR)/utils/tokenizer_utils.c \
 	$(SRC_DIR)/utils/lexer_utils.c \
 	$(SRC_DIR)/utils/lexer_helpers.c \

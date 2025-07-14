@@ -19,7 +19,10 @@ t_ast	*ast_error(char *msg)
 	error_node = ast_new(AST_ERROR, NULL, 0, 0);
 	if (!error_node)
 		return (NULL);
-	error_node->error = ft_strdup(msg);
+	if (msg)
+		error_node->error = ft_strdup(msg);
+	else
+		error_node->error = ft_strdup("Something went wrong");
 	if (!error_node->error)
 		return (ast_free(error_node), NULL);
 	return (error_node);

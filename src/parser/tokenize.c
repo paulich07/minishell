@@ -21,10 +21,13 @@ int	should_join_to_last(const char *line, char *start)
 
 int	insert_node(t_list **tokens, const char *line, char *start, char *word)
 {
-	t_list	*node;
+	t_token_type	word_type;
+	t_list			*node;
 
+	word_type = classify_token(word);
 	node = ft_lstlast(*tokens);
-	if (should_join_to_last(line, start) && node != NULL)
+	if (node != NULL && word_type == TKN_WORD
+		&& should_join_to_last(line, start))
 	{
 		node->content = ft_strfreejoin(node->content, word);
 		if (!node->content)

@@ -16,6 +16,8 @@
 // Core expansion entry point
 void	expand_ast(t_ast *root, t_sh *shell)
 {
+	if (!root)
+		return ;
 	astt_post_ctx(root, should_expand_token, shell);
 }
 

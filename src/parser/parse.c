@@ -18,12 +18,16 @@ t_ast	*parse_pipeline(t_parser *p)
 	t_ast		*right;
 	t_ast		*left;
 
+	if (!p->current || p->current->type == TKN_PIPE)
+		return (syntax_error_token("|"));
 	left = parse_command(p);
 	if (!left)
 		return (syntax_error_token("|"));
 	while (p->current && p->current->type == TKN_PIPE)
 	{
 		advance(p);
+		if (!p->current)
+			return (ast_free(left), syntax_error_token("|"));
 		right = parse_command(p);
 		if (!right)
 			return (ast_free(left), syntax_error_token("|"));

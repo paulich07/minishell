@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "parser.h"
 
-static t_token	*init_token(t_list *raw_tokens, t_token_type prev_type)
+static t_token	*init_token(t_list *raw_tokens, t_token *prev_tkn)
 {
 	t_token	*token;
 
@@ -25,7 +25,7 @@ static t_token	*init_token(t_list *raw_tokens, t_token_type prev_type)
 	if (!token->value)
 		return (free(token), NULL);
 	token->type = classify_token(token->value);
-	if (prev_type == TKN_HEREDOC && token->type == TKN_WORD)
+	if (prev_tkn && prev_tkn->type == TKN_HEREDOC)
 		token->is_heredoc_word = 1;
 	token->quote = classify_quote(token->value);
 	if (!token->value)
@@ -40,20 +40,20 @@ t_list	*lex(t_list *raw_tokens)
 	t_list			*lexemes;
 	t_token			*token;
 	t_list			*new_node;
-	t_token_type	prev_type;
+	t_token			*prev_token;
 
 	lexemes = NULL;
-	prev_type = TKN_WORD;
+	prev_token = NULL;
 	while (raw_tokens)
 	{
-		token = init_token(raw_tokens, prev_type);
+		token = init_token(raw_tokens, prev_token);
 		if (!token)
 			return (free_token_list(&lexemes), NULL);
 		new_node = ft_lstnew(token);
 		if (!new_node)
 			return (free_token(token), free_token_list(&lexemes), NULL);
 		ft_lstadd_back(&lexemes, new_node);
-		prev_type = token->type;
+		prev_token = token;
 		raw_tokens = raw_tokens->next;
 	}
 	return (lexemes);

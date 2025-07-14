@@ -25,12 +25,12 @@ void	main_loop(t_sh *shell)
 		if (!shell->line)
 			break ;
 		shell->tree = read_command_line(shell->line);
-		if (ft_strlen(shell->line) > 0)
-			add_history(shell->line);
 		expand_ast(shell->tree, shell);
 		shell->last_code = 0;
 		if (!shell->tree)
 			continue ;
+		if (ft_strlen(shell->line) > 0)
+			add_history(shell->line);
 		status = process_ast_redirections(shell->tree, shell);
 		if (status >= 0)
 			shell->last_code = executor(shell->tree, shell);

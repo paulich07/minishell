@@ -78,9 +78,8 @@ t_ast	*parse_command(t_parser *p)
 		if (!tkn_is_redirection(p->current) && !tkn_is_word(p->current))
 			break ;
 		error = handle_redirection(p, &cmd);
-		if (error)
-			return (error);
-		error = handle_word(p, &cmd);
+		if (!error)
+			error = handle_word(p, &cmd);
 		if (error)
 			return (error);
 	}

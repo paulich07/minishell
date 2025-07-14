@@ -104,7 +104,7 @@ int				ast_is_valid(t_ast *node);
 void			validate_ast(t_ast **root);
 
 // parser utils
-void advance(t_parser *p);
+void			advance(t_parser *p);
 t_token			*peek(t_parser *p);
 int				match(t_parser *p, t_token_type type);
 t_ast			*unwrap_command(t_ast *node);
